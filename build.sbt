@@ -1,46 +1,153 @@
-name := "eff-arch-sample"
-version := "1.0.0"
+import com.typesafe.sbt.GitVersioning
+import com.typesafe.sbt.packager.archetypes.JavaServerAppPackaging
+import com.lucidchart.sbt.scalafmt.ScalafmtPlugin
 
-scalaVersion := "2.12.4"
-scalacOptions ++= Seq(
-  "-deprecation",
-  "-encoding",
-  "UTF-8",
-  "-feature",
-  "-language:existentials",
-  "-language:higherKinds",
-  "-Ypartial-unification",
-  "-language:experimental.macros",
-  "-language:implicitConversions"
+import play.sbt.{ PlayLayoutPlugin, PlayScala }
+import sbtprotoc.ProtocPlugin
+
+lazy val allModules = Seq[ProjectReference](
+  sharedExternalAdapter,
+  sharedInternalAdapter,
+  sharedStreamAdapter,
+  sharedSecondaryAdapter,
+  sharedLib,
+  exampleApiExternalAdapter,
+  exampleApiInternalAdapter,
+  exampleApiSecondaryAdapter,
+  exampleApiUseCase,
+  exampleApiDomain
 )
 
-resolvers +=
-  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+/** ***********************************************
+  * root - 分離前&統合test用PJ
+  * ***********************************************/
+lazy val root = (project in file("."))
+  .configs(Common.Settings.DebugTest)
+  .settings(Common.Settings.commonSettings: _*)
+  .settings(Common.Settings.commonTestSettings: _*)
+  .settings(Common.Settings.playSettings: _*)
+  .settings(RootProject.Settings.rootSettings: _*)
+  .settings(Common.Settings.playViewSettings: _*)
+  .aggregate(
+    allModules: _*
+  )
+  .dependsOn(
+    allModules.map(_ % "test->test;compile->compile;test->compile"): _*
+  )
+  .enablePlugins(PlayScala, GitVersioning, JavaServerAppPackaging, ScalafmtPlugin)
 
-val shttpVer = "1.1.4"
-val circeVer = "0.8.0"
-val effVer = "4.5.0"
+/** ***********************************************
+  * shared - 共通コード
+  * ***********************************************/
+lazy val sharedExternalAdapter = (project in file("modules/shared/external-adapter"))
+  .configs(Common.Settings.DebugTest)
+  .settings(SharedProject.Settings.externalAdapterPjSettings: _*)
+  .settings(libraryDependencies ++= SharedProject.Dependencies.ExternalAdapterPj.Deps(scalaVersion.value))
+  .dependsOn(
+    sharedSecondaryAdapter % "test->test;compile->compile;test->compile",
+    sharedLib              % "test->test;compile->compile;test->compile"
+  )
+  .disablePlugins(PlayLayoutPlugin)
+  .enablePlugins(PlayScala, GitVersioning)
 
-libraryDependencies ++= Seq(
-  "com.github.pureconfig"      %% "pureconfig"                      % "0.7.2",
-  "com.softwaremill.quicklens" %% "quicklens"                       % "1.4.11",
-  "com.typesafe.akka"          %% "akka-actor"                      % "2.4.19",
-  "com.typesafe.akka"          %% "akka-http"                       % "10.0.10",
-  "de.heikoseeberger"          %% "akka-http-circe"                 % "1.18.1",
-  "io.circe"                   %% "circe-core"                      % circeVer,
-  "io.circe"                   %% "circe-generic"                   % circeVer,
-  "io.circe"                   %% "circe-generic-extras"            % circeVer,
-  "io.circe"                   %% "circe-java8"                     % circeVer,
-  "io.circe"                   %% "circe-jawn"                      % circeVer,
-  "org.atnos"                  %% "eff"                             % effVer,
-  "org.atnos"                  %% "eff-monix"                       % effVer,
-  "org.typelevel"              %% "cats-core"                       % "0.9.0",
-  "org.zalando"                %% "grafter"                         % "2.3.0",
-  "ch.qos.logback"             % "logback-classic"                  % "1.2.3",
-  "com.typesafe.scala-logging" %% "scala-logging"                   % "3.7.2",
-  "com.softwaremill.sttp"      %% "core"                            % shttpVer,
-  "com.softwaremill.sttp"      %% "async-http-client-backend-monix" % shttpVer,
-  "com.softwaremill.sttp"      %% "circe"                           % shttpVer,
-  compilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.4"),
-  compilerPlugin("org.scalamacros" %% "paradise"       % "2.1.1" cross CrossVersion.full)
-)
+lazy val sharedInternalAdapter = (project in file("modules/shared/internal-adapter"))
+  .configs(Common.Settings.DebugTest)
+  .settings(SharedProject.Settings.internalAdapterPjSettings: _*)
+  .settings(libraryDependencies ++= SharedProject.Dependencies.InternalAdapterPj.Deps)
+  .dependsOn(
+    sharedSecondaryAdapter % "test->test;compile->compile;test->compile",
+    sharedLib              % "test->test;compile->compile;test->compile"
+  )
+  .enablePlugins(GitVersioning, JavaServerAppPackaging)
+  .disablePlugins(PlayScala)
+
+lazy val sharedStreamAdapter = (project in file("modules/shared/stream-adapter"))
+  .configs(Common.Settings.DebugTest)
+  .settings(SharedProject.Settings.streamAdapterPjSettings: _*)
+  .settings(libraryDependencies ++= SharedProject.Dependencies.StreamAdapterPj.Deps)
+  .dependsOn(
+    sharedSecondaryAdapter % "test->test;compile->compile;test->compile",
+    sharedLib              % "test->test;compile->compile;test->compile"
+  )
+  .enablePlugins(GitVersioning, JavaServerAppPackaging)
+  .disablePlugins(PlayScala)
+
+lazy val sharedSecondaryAdapter = (project in file("modules/shared/secondary-adapter"))
+  .configs(Common.Settings.DebugTest)
+  .settings(SharedProject.Settings.secondaryAdapterPjSettings: _*)
+  .settings(libraryDependencies ++= SharedProject.Dependencies.SecondaryAdapterPj.Deps(scalaVersion.value))
+  .dependsOn(
+    sharedLib % "test->test;compile->compile;test->compile"
+  )
+  .disablePlugins(PlayLayoutPlugin)
+  .enablePlugins(PlayScala, GitVersioning)
+
+lazy val sharedLib = (project in file("modules/shared/lib"))
+  .configs(Common.Settings.DebugTest)
+  .settings(SharedProject.Settings.libPjSettings: _*)
+  .settings(libraryDependencies ++= SharedProject.Dependencies.LibPj.Deps)
+  .dependsOn()
+  .disablePlugins(PlayScala, ProtocPlugin)
+
+/** ***********************************************
+  * exampleApi
+  * ***********************************************/
+lazy val exampleApiExternalAdapter = (project in file("modules/example-api/external-adapter"))
+  .configs(Common.Settings.DebugTest)
+  .settings(ExampleApiProject.Settings.externalAdapterPjSettings: _*)
+  .settings(libraryDependencies ++= ExampleApiProject.Dependencies.externalAdapterPjDeps(scalaVersion.value))
+  .dependsOn(
+    sharedExternalAdapter % "test->test;compile->compile;test->compile"
+  )
+  .disablePlugins(PlayLayoutPlugin)
+  .enablePlugins(PlayScala, GitVersioning)
+
+lazy val exampleApiInternalAdapter = (project in file("modules/example-api/internal-adapter"))
+  .configs(Common.Settings.DebugTest)
+  .settings(ExampleApiProject.Settings.internalAdapterPjSettings: _*)
+  .settings(libraryDependencies ++= ExampleApiProject.Dependencies.internalAdapterPjDeps)
+  .dependsOn(
+    sharedInternalAdapter % "test->test;compile->compile;test->compile"
+  )
+  .enablePlugins(GitVersioning, JavaServerAppPackaging)
+  .disablePlugins(PlayScala)
+
+lazy val exampleApiSecondaryAdapter = (project in file("modules/example-api/secondary-adapter"))
+  .configs(Common.Settings.DebugTest)
+  .settings(ExampleApiProject.Settings.secondaryAdapterPjSettings: _*)
+  .settings(libraryDependencies ++= ExampleApiProject.Dependencies.secondaryAdapterPjDeps)
+  .dependsOn(
+    sharedSecondaryAdapter % "test->test;compile->compile;test->compile",
+    exampleApiUseCase      % "test->test;compile->compile;test->compile"
+  )
+  .disablePlugins(PlayScala, PlayLayoutPlugin, ProtocPlugin)
+
+lazy val exampleApiUseCase = (project in file("modules/example-api/usecase"))
+  .configs(Common.Settings.DebugTest)
+  .settings(ExampleApiProject.Settings.useCasePjSettings: _*)
+  .settings(libraryDependencies ++= ExampleApiProject.Dependencies.useCasePjDeps)
+  .dependsOn(
+    exampleApiDomain % "test->test;compile->compile;test->compile"
+  )
+  .disablePlugins(PlayScala, PlayLayoutPlugin, ProtocPlugin)
+
+lazy val exampleApiDomain = (project in file("modules/example-api/domain"))
+  .configs(Common.Settings.DebugTest)
+  .settings(ExampleApiProject.Settings.domainPjSettings: _*)
+  .settings(libraryDependencies ++= ExampleApiProject.Dependencies.domainPjDeps)
+  .dependsOn(
+    sharedLib % "test->test;compile->compile;test->compile"
+  )
+  .disablePlugins(PlayScala, ProtocPlugin)
+
+/** ***********************************************
+  * Other
+  * ***********************************************/
+fork in Test := false
+
+testOptions in Test += Tests.Argument("-oT")
+
+// disable publishing the main API jar
+publishArtifact in (Compile, packageDoc) := false
+// disable publishing the main sources jar
+publishArtifact in (Compile, packageSrc) := false
