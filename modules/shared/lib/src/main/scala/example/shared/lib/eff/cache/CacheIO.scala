@@ -1,8 +1,7 @@
 package example.shared.lib.eff.cache
 
+import example.shared.lib.eff.cache.CacheIOTypes._
 import redis.ByteStringFormatter
-
-import jp.eigosapuri.es.shared.lib.eff.cache.CacheIOTypes._
 
 sealed abstract class CacheIO[+A] {}
 

@@ -2,9 +2,9 @@ package example.shared.lib.test.eff.util.clock.jodatime
 
 import org.atnos.eff.{ Eff, Member }
 
-import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.{ JodaTimeM, JodaTimeUtilsImpl }
-import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.interpreter.JodaTimeMInterpreterImpl
-import jp.eigosapuri.es.shared.lib.util.DateTimeUtils
+import example.shared.lib.eff.util.clock.joda.{ JodaTimeM, JodaTimeUtilsImpl }
+import example.shared.lib.eff.util.clock.joda.interpreter.JodaTimeMInterpreterImpl
+import example.shared.lib.util.DateTimeUtils
 
 trait JodaTimeMTestOps {
   implicit class JodaTimeMTestOps[R, A](effects: Eff[R, A]) {

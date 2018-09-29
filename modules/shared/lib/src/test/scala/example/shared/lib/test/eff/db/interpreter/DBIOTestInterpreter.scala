@@ -34,9 +34,9 @@ import scalaz.Scalaz.ToEitherOps
 import scala.util.{ Failure => F, Success => S }
 import scala.concurrent.{ ExecutionContext, Future, Promise }
 
-import jp.eigosapuri.es.shared.lib.dddSupport.{ ErrorCode, EsError }
-import jp.eigosapuri.es.shared.lib.eff._errorEither
-import jp.eigosapuri.es.shared.lib.eff.db.slick.DBComponent
+import example.shared.lib.dddSupport.{ Error, ErrorCode }
+import example.shared.lib.eff._errorEither
+import example.shared.lib.eff.db.slick.DBComponent
 
 class DBIOTestInterpreter @Inject()(
   dbc: DBComponent
@@ -59,10 +59,10 @@ class DBIOTestInterpreter @Inject()(
               case S(r) =>
                 r.right
               case F(e) =>
-                EsError.DatabaseError(e, ErrorCode.SERVER_ERROR).left
+                Error.DatabaseError(e, ErrorCode.SERVER_ERROR).left
             }
           }
-          res <- fromDisjunction[U, EsError, X](resE)
+          res <- fromDisjunction[U, Error, X](resE)
         } yield res
       }
     })

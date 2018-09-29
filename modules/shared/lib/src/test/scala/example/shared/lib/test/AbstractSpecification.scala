@@ -5,13 +5,12 @@ import com.eaio.uuid.UUID
 import org.joda.time.{ DateTime, DateTimeZone, LocalDate }
 import org.atnos.eff.Fx
 
-import jp.eigosapuri.es.shared.lib.util.DateTimeUtils
+import example.shared.lib.util.DateTimeUtils
 import org.joda.time.{ DateTime, LocalDate }
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.words.MatcherWords
 import org.scalatest.{ MustMatchers, OptionValues, WordSpec }
 
-import example.shared.lib.test.eff.cache.interpreter.CacheIOTestInterpreter
 import monix.eval.Task
 import monix.execution.Scheduler
 import slick.dbio.DBIO
@@ -22,12 +21,10 @@ import scala.util.Random
 
 import scalaz.Monad
 
-import jp.eigosapuri.es.shared.lib.dddSupport.adapter.secondary.repository.DBIOTaskRunner
-import jp.eigosapuri.es.shared.lib.dddSupport.domain.{ EsRandom, Identifier, UUIDIdGenerator, UUIDIdGeneratorImpl }
-import jp.eigosapuri.es.shared.lib.eff.{ ErrorEither, WriterLogMsg }
-import jp.eigosapuri.es.shared.lib.eff.cache.CacheIO
-import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.JodaTimeUtils
-import jp.eigosapuri.es.shared.lib.test.eff.cache.interpreter.CacheIOTestInterpreter
+import example.shared.lib.dddSupport.domain.{ EsRandom, Identifier, UUIDIdGenerator, UUIDIdGeneratorImpl }
+import example.shared.lib.eff.{ ErrorEither, WriterLogMsg }
+import example.shared.lib.eff.cache.CacheIO
+import example.shared.lib.eff.util.clock.joda.JodaTimeUtils
 
 /**
   * test用の抽象クラス
@@ -37,8 +34,7 @@ abstract class AbstractSpecification
   with ScalaFutures
   with MatcherWords
   with MustMatchers
-  with OptionValues
-  with CacheIOTestInterpreter {
+  with OptionValues {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -114,5 +110,4 @@ abstract class AbstractSpecification
     override def bind[A, B](fa: DBIO[A])(f: A => DBIO[B]) = fa.flatMap(f)
   }
 
-  protected[this] implicit val mTaskRunner: DBIOTaskRunner[DBIO] = new DBIOTaskRunnerTestImpl
 }

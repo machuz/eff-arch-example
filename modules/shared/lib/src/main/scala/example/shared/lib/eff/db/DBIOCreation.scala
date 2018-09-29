@@ -4,8 +4,7 @@ import org.atnos.eff.Eff
 import org.atnos.eff.all.send
 
 import _root_.slick.dbio.DBIO
-
-import jp.eigosapuri.es.shared.lib.eff.db.DBIOTypes._dbio
+import example.shared.lib.eff.db.DBIOTypes._dbio
 
 trait DBIOCreation {
 

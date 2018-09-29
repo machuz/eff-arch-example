@@ -1,6 +1,6 @@
 package example.shared.adapter.config
 
-import jp.eigosapuri.es.shared.adapter.config.support.ApplicationConfBase
+import example.shared.adapter.config.support.ApplicationConfBase
 
 object SharedAdapterConf extends ApplicationConfBase {
 

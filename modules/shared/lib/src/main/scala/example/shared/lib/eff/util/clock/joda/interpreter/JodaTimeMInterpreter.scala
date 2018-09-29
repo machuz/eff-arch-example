@@ -6,8 +6,8 @@ import org.atnos.eff._
 import org.atnos.eff.syntax.eff._
 import org.atnos.eff.interpret._
 
-import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.{ JodaTimeM, JodaTimeUtils }
-import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.JodaTimeM.Now
+import example.shared.lib.eff.util.clock.joda.{ JodaTimeM, JodaTimeUtils }
+import example.shared.lib.eff.util.clock.joda.JodaTimeM.Now
 
 abstract class JodaTimeMInterpreter {
   def run[R, U, A](effects: Eff[R, A])(

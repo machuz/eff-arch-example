@@ -5,9 +5,9 @@ import org.atnos.eff.{ Eff, Member }
 
 import java.time.Clock
 
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.ClockM
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.ClockMInterpretationTypes.ReaderClock
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.interpreter.ClockMInterpreter
+import example.shared.lib.eff.util.clock.java8.ClockM
+import example.shared.lib.eff.util.clock.java8.ClockMInterpretationTypes.ReaderClock
+import example.shared.lib.eff.util.clock.java8.interpreter.ClockMInterpreter
 
 trait ClockMTestOps extends ClockMInterpreter {
   implicit class ClockMTestOps[R, A](effects: Eff[R, A]) {

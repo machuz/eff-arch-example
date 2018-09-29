@@ -10,7 +10,7 @@ import example.shared.lib.test.AbstractSpecification
 
 class RichDateTimeSpec extends AbstractSpecification {
 
-  import jp.eigosapuri.es.shared.lib.pimp.RichDateTime._
+  import example.shared.lib.pimp.RichDateTime._
   val datetime: DateTime = new DateTime(2011, 10, 23, 3, 50, 1, 2) // 2011/10/23 03:50:1.2
 
   "RichDateTime" can {

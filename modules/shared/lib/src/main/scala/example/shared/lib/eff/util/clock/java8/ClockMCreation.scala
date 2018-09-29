@@ -4,8 +4,8 @@ import org.atnos.eff.Eff
 
 import java.time.{ LocalDateTime, ZoneOffset, ZonedDateTime }
 
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.ClockM._
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.ClockMTypes._clockm
+import example.shared.lib.eff.util.clock.java8.ClockM._
+import example.shared.lib.eff.util.clock.java8.ClockMTypes._clockm
 
 trait ClockMCreation {
 

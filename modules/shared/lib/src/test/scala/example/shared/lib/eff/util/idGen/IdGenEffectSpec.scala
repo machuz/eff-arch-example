@@ -8,10 +8,10 @@ import org.mockito.{ Matchers, Mockito }
 
 import example.shared.lib.test.AbstractSpecification
 
-import jp.eigosapuri.es.shared.lib.dddSupport.domain.{ IdGenerator, Identifier, UUIDIdGenerator }
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.IdGenInterpretationTypes.IdGenStack
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.IdGenTypes._idgen
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.interpreter.{ IdGenInterpreter, IdGenInterpreterImpl }
+import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier, UUIDIdGenerator }
+import example.shared.lib.eff.util.idGen.IdGenInterpretationTypes.IdGenStack
+import example.shared.lib.eff.util.idGen.IdGenTypes._idgen
+import example.shared.lib.eff.util.idGen.interpreter.{ IdGenInterpreter, IdGenInterpreterImpl }
 
 class IdGenEffectSpec extends AbstractSpecification {
 

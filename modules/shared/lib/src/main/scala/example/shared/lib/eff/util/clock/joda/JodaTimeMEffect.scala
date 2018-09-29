@@ -2,7 +2,7 @@ package example.shared.lib.eff.util.clock.joda
 
 import org.atnos.eff.{ Eff, Fx, Member }
 
-import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.interpreter.JodaTimeMInterpreter
+import example.shared.lib.eff.util.clock.joda.interpreter.JodaTimeMInterpreter
 
 object JodaTimeMInterpretationTypes {
   type JodaTimeMStack = Fx.fx1[JodaTimeM]

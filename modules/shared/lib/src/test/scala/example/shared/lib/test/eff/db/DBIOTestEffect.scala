@@ -10,11 +10,11 @@ import example.shared.lib.test.eff.db.slick.TestDBComponent
 
 import scala.concurrent.ExecutionContext
 
-import jp.eigosapuri.es.shared.lib.eff._errorEither
-import jp.eigosapuri.es.shared.lib.eff.db.DBIOCreation
-import jp.eigosapuri.es.shared.lib.eff.db.DBIOTypes.{ ReaderDB, _readerDB }
-import jp.eigosapuri.es.shared.lib.eff.db.slick.DBComponent
-import jp.eigosapuri.es.shared.lib.test.eff.db.slick.TestDBComponent
+import example.shared.lib.eff._errorEither
+import example.shared.lib.eff.db.DBIOCreation
+import example.shared.lib.eff.db.DBIOTypes.{ _readerDB, ReaderDB }
+import example.shared.lib.eff.db.slick.DBComponent
+import example.shared.lib.test.eff.db.slick.TestDBComponent
 
 trait DBIOTestOps {
   implicit class DBIOTestOps[R, A](effects: Eff[R, A]) {

@@ -2,9 +2,9 @@ package example.shared.lib.eff.util.idGen
 
 import org.atnos.eff.Eff
 
-import jp.eigosapuri.es.shared.lib.dddSupport.domain.{ IdGenerator, Identifier }
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.IdGen.Generate
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.IdGenTypes._idgen
+import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier }
+import example.shared.lib.eff.util.idGen.IdGen.Generate
+import example.shared.lib.eff.util.idGen.IdGenTypes._idgen
 
 trait IdGenCreation {
 

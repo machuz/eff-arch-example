@@ -6,8 +6,8 @@ import org.joda.time.{ DateTime, DateTimeConstants, DateTimeZone, Interval, Loca
 
 import scala.concurrent.ExecutionContext
 
-import jp.eigosapuri.es.shared.lib.util.DateTimeUtils
-import jp.eigosapuri.es.shared.lib.dddSupport.domain.{ Identifier, UUIDIdGenerator }
+import example.shared.lib.util.DateTimeUtils
+import example.shared.lib.dddSupport.domain.{ Identifier, UUIDIdGenerator }
 
 /**
   * UseCase test用の抽象クラス

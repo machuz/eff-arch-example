@@ -4,8 +4,8 @@ import org.atnos.eff.Eff
 
 import redis.{ ByteStringFormatter, Cursor }
 
-import jp.eigosapuri.es.shared.lib.eff.cache.CacheIO._
-import jp.eigosapuri.es.shared.lib.eff.cache.CacheIOTypes._
+import example.shared.lib.eff.cache.CacheIO._
+import example.shared.lib.eff.cache.CacheIOTypes._
 
 trait CacheIOCreation {
 

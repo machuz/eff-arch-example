@@ -7,8 +7,8 @@ import cats.data.Reader
 
 import java.time.Clock
 
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.interpreter.ClockMInterpreter
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.ClockMInterpretationTypes.ReaderClock
+import example.shared.lib.eff.util.clock.java8.interpreter.ClockMInterpreter
+import example.shared.lib.eff.util.clock.java8.ClockMInterpretationTypes.ReaderClock
 
 object ClockMInterpretationTypes {
   type ReaderClock[A]  = Reader[Clock, A]

@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray
 import scala.concurrent.{ ExecutionContext, Future, Promise }
 import scala.util.{ Failure, Success }
 
-import jp.eigosapuri.es.shared.lib.eff.db.slick.DBComponent
+import example.shared.lib.eff.db.slick.DBComponent
 
 class TestDBComponent extends DBComponent {
   override protected val profile = H2Profile // DBは叩かないが、Database型定義のため必須

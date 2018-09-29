@@ -1,9 +1,9 @@
 package example.shared.lib.pimp
 
-import jp.eigosapuri.es.shared.lib.pimp.DateString._
-import jp.eigosapuri.es.shared.lib.pimp.RichDateTime._
-import jp.eigosapuri.es.shared.lib.util.DateTimeUtils
-import org.joda.time.{ DateTime, LocalDate }
+import example.shared.lib.pimp.DateString._
+import example.shared.lib.pimp.RichDateTime._
+import example.shared.lib.util.DateTimeUtils
+import org.joda.time.{ DateTime, DateTimeZone, LocalDate }
 
 import example.shared.lib.test.AbstractSpecification
 
@@ -26,7 +26,7 @@ class DateStringSpec extends AbstractSpecification {
 
       // 返り値は常にUTC
       "toDateTime&toLocalDate[JST] (ISO8601)" in {
-        val dt: String = datetime.setTimeZone(DateTimeUtils.TIMEZONE_JST.getID).toString
+        val dt: String = datetime.setTimeZone(DateTimeZone.forID("Asia/Tokyo").getID).toString
 
         val ret1: DateTime  = dt.toDateTime
         val ret2: LocalDate = dt.toLocalDate

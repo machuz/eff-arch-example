@@ -2,7 +2,7 @@ package example.shared.lib.eff.util.idGen
 
 import org.atnos.eff.{ Eff, Fx, Member }
 
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.interpreter.IdGenInterpreter
+import example.shared.lib.eff.util.idGen.interpreter.IdGenInterpreter
 
 object IdGenInterpretationTypes {
   type IdGenStack = Fx.fx1[IdGen]

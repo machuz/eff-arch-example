@@ -7,9 +7,9 @@ import org.atnos.eff.{ Eff, Member, Translate }
 
 import java.time.{ Clock, DayOfWeek, LocalDateTime, ZonedDateTime }
 
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.ClockM
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.ClockM._
-import jp.eigosapuri.es.shared.lib.eff.util.clock.java8.ClockMInterpretationTypes._
+import example.shared.lib.eff.util.clock.java8.ClockM
+import example.shared.lib.eff.util.clock.java8.ClockM._
+import example.shared.lib.eff.util.clock.java8.ClockMInterpretationTypes._
 
 trait ClockMInterpreter {
 

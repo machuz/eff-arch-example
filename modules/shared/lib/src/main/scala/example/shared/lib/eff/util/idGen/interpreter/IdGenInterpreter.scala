@@ -6,9 +6,9 @@ import org.atnos.eff._
 import org.atnos.eff.interpret._
 import org.atnos.eff.syntax.eff._
 
-import jp.eigosapuri.es.shared.lib.dddSupport.domain.UUIDIdGenerator
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.IdGen
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.IdGen.Generate
+import example.shared.lib.dddSupport.domain.UUIDIdGenerator
+import example.shared.lib.eff.util.idGen.IdGen
+import example.shared.lib.eff.util.idGen.IdGen.Generate
 
 abstract class IdGenInterpreter {
   def run[R, U, A](effects: Eff[R, A])(

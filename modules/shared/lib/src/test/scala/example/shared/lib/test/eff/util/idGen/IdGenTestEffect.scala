@@ -4,9 +4,9 @@ import com.eaio.uuid.UUID
 
 import org.atnos.eff.{ Eff, Member }
 
-import jp.eigosapuri.es.shared.lib.dddSupport.domain.UUIDIdGenerator
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.{ IdGen, IdGenCreation }
-import jp.eigosapuri.es.shared.lib.eff.util.idGen.interpreter.{ IdGenInterpreter, IdGenInterpreterImpl }
+import example.shared.lib.dddSupport.domain.UUIDIdGenerator
+import example.shared.lib.eff.util.idGen.{ IdGen, IdGenCreation }
+import example.shared.lib.eff.util.idGen.interpreter.{ IdGenInterpreter, IdGenInterpreterImpl }
 
 trait IdGenTestOps {
 

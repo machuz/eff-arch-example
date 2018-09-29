@@ -4,30 +4,30 @@ import org.atnos.eff.{ /=, addon, Eff, Member }
 
 import scalaz.{ \/, Semigroup }
 
-import jp.eigosapuri.es.shared.lib.dddSupport.EsError
-import jp.eigosapuri.es.shared.lib.eff._errorEither
+import example.shared.lib.dddSupport.Error
+import example.shared.lib.eff._errorEither
 
-object EsErrorEffect extends EsErrorOps {
-  def fromEsError[R, A](ea: EsError \/ A)(implicit member: _errorEither[R]): Eff[R, A] =
+object ErrorEffect extends ErrorOps {
+  def fromError[R, A](ea: Error \/ A)(implicit member: _errorEither[R]): Eff[R, A] =
     org.atnos.eff.all.fromEither(ea.fold(Left.apply, Right.apply))
 }
 
-trait EsErrorOps {
+trait ErrorOps {
 
-  implicit class EsErrorOps[R, A](val e: Eff[R, A]) {
+  implicit class ErrorOps[R, A](val e: Eff[R, A]) {
 
-    def runEsError[U](implicit m: Member.Aux[(EsError Either ?), R, U]): Eff[U, EsError \/ A] =
+    def runError[U](implicit m: Member.Aux[(Error Either ?), R, U]): Eff[U, Error \/ A] =
       addon.scalaz.either.runDisjunction(e)
 
-    def runEsErrorCombine[U](
-      implicit m: Member.Aux[(EsError Either ?), R, U],
-      s: Semigroup[EsError]
-    ): Eff[U, EsError \/ A] =
+    def runErrorCombine[U](
+      implicit m: Member.Aux[(Error Either ?), R, U],
+      s: Semigroup[Error]
+    ): Eff[U, Error \/ A] =
       addon.scalaz.either.runDisjunctionCombine(e)
 
     def catchLeftCombine(
-      handle: EsError => Eff[R, A]
-    )(implicit member: (EsError Either ?) /= R, s: Semigroup[EsError]): Eff[R, A] =
+      handle: Error => Eff[R, A]
+    )(implicit member: (Error Either ?) /= R, s: Semigroup[Error]): Eff[R, A] =
       addon.scalaz.either.catchLeftCombine(e)(handle)
 
   }

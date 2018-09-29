@@ -1,9 +1,4 @@
-import com.typesafe.sbt.GitVersioning
-import com.typesafe.sbt.packager.archetypes.JavaServerAppPackaging
-import com.lucidchart.sbt.scalafmt.ScalafmtPlugin
-
-import play.sbt.{ PlayLayoutPlugin, PlayScala }
-import sbtprotoc.ProtocPlugin
+import sbt._
 
 lazy val allModules = Seq[ProjectReference](
   sharedExternalAdapter,
@@ -25,16 +20,14 @@ lazy val root = (project in file("."))
   .configs(Common.Settings.DebugTest)
   .settings(Common.Settings.commonSettings: _*)
   .settings(Common.Settings.commonTestSettings: _*)
-  .settings(Common.Settings.playSettings: _*)
   .settings(RootProject.Settings.rootSettings: _*)
-  .settings(Common.Settings.playViewSettings: _*)
   .aggregate(
     allModules: _*
   )
   .dependsOn(
     allModules.map(_ % "test->test;compile->compile;test->compile"): _*
   )
-  .enablePlugins(PlayScala, GitVersioning, JavaServerAppPackaging, ScalafmtPlugin)
+  .enablePlugins(GitVersioning, JavaServerAppPackaging, ScalafmtPlugin)
 
 /** ***********************************************
   * shared - 共通コード
@@ -42,13 +35,11 @@ lazy val root = (project in file("."))
 lazy val sharedExternalAdapter = (project in file("modules/shared/external-adapter"))
   .configs(Common.Settings.DebugTest)
   .settings(SharedProject.Settings.externalAdapterPjSettings: _*)
-  .settings(libraryDependencies ++= SharedProject.Dependencies.ExternalAdapterPj.Deps(scalaVersion.value))
+  .settings(libraryDependencies ++= SharedProject.Dependencies.ExternalAdapterPj.Deps)
   .dependsOn(
     sharedSecondaryAdapter % "test->test;compile->compile;test->compile",
     sharedLib              % "test->test;compile->compile;test->compile"
   )
-  .disablePlugins(PlayLayoutPlugin)
-  .enablePlugins(PlayScala, GitVersioning)
 
 lazy val sharedInternalAdapter = (project in file("modules/shared/internal-adapter"))
   .configs(Common.Settings.DebugTest)
@@ -58,8 +49,6 @@ lazy val sharedInternalAdapter = (project in file("modules/shared/internal-adapt
     sharedSecondaryAdapter % "test->test;compile->compile;test->compile",
     sharedLib              % "test->test;compile->compile;test->compile"
   )
-  .enablePlugins(GitVersioning, JavaServerAppPackaging)
-  .disablePlugins(PlayScala)
 
 lazy val sharedStreamAdapter = (project in file("modules/shared/stream-adapter"))
   .configs(Common.Settings.DebugTest)
@@ -69,25 +58,20 @@ lazy val sharedStreamAdapter = (project in file("modules/shared/stream-adapter")
     sharedSecondaryAdapter % "test->test;compile->compile;test->compile",
     sharedLib              % "test->test;compile->compile;test->compile"
   )
-  .enablePlugins(GitVersioning, JavaServerAppPackaging)
-  .disablePlugins(PlayScala)
 
 lazy val sharedSecondaryAdapter = (project in file("modules/shared/secondary-adapter"))
   .configs(Common.Settings.DebugTest)
   .settings(SharedProject.Settings.secondaryAdapterPjSettings: _*)
-  .settings(libraryDependencies ++= SharedProject.Dependencies.SecondaryAdapterPj.Deps(scalaVersion.value))
+  .settings(libraryDependencies ++= SharedProject.Dependencies.SecondaryAdapterPj.Deps)
   .dependsOn(
     sharedLib % "test->test;compile->compile;test->compile"
   )
-  .disablePlugins(PlayLayoutPlugin)
-  .enablePlugins(PlayScala, GitVersioning)
 
 lazy val sharedLib = (project in file("modules/shared/lib"))
   .configs(Common.Settings.DebugTest)
   .settings(SharedProject.Settings.libPjSettings: _*)
   .settings(libraryDependencies ++= SharedProject.Dependencies.LibPj.Deps)
   .dependsOn()
-  .disablePlugins(PlayScala, ProtocPlugin)
 
 /** ***********************************************
   * exampleApi
@@ -95,12 +79,10 @@ lazy val sharedLib = (project in file("modules/shared/lib"))
 lazy val exampleApiExternalAdapter = (project in file("modules/example-api/external-adapter"))
   .configs(Common.Settings.DebugTest)
   .settings(ExampleApiProject.Settings.externalAdapterPjSettings: _*)
-  .settings(libraryDependencies ++= ExampleApiProject.Dependencies.externalAdapterPjDeps(scalaVersion.value))
+  .settings(libraryDependencies ++= ExampleApiProject.Dependencies.externalAdapterPjDeps)
   .dependsOn(
     sharedExternalAdapter % "test->test;compile->compile;test->compile"
   )
-  .disablePlugins(PlayLayoutPlugin)
-  .enablePlugins(PlayScala, GitVersioning)
 
 lazy val exampleApiInternalAdapter = (project in file("modules/example-api/internal-adapter"))
   .configs(Common.Settings.DebugTest)
@@ -109,8 +91,6 @@ lazy val exampleApiInternalAdapter = (project in file("modules/example-api/inter
   .dependsOn(
     sharedInternalAdapter % "test->test;compile->compile;test->compile"
   )
-  .enablePlugins(GitVersioning, JavaServerAppPackaging)
-  .disablePlugins(PlayScala)
 
 lazy val exampleApiSecondaryAdapter = (project in file("modules/example-api/secondary-adapter"))
   .configs(Common.Settings.DebugTest)
@@ -120,7 +100,6 @@ lazy val exampleApiSecondaryAdapter = (project in file("modules/example-api/seco
     sharedSecondaryAdapter % "test->test;compile->compile;test->compile",
     exampleApiUseCase      % "test->test;compile->compile;test->compile"
   )
-  .disablePlugins(PlayScala, PlayLayoutPlugin, ProtocPlugin)
 
 lazy val exampleApiUseCase = (project in file("modules/example-api/usecase"))
   .configs(Common.Settings.DebugTest)
@@ -129,7 +108,6 @@ lazy val exampleApiUseCase = (project in file("modules/example-api/usecase"))
   .dependsOn(
     exampleApiDomain % "test->test;compile->compile;test->compile"
   )
-  .disablePlugins(PlayScala, PlayLayoutPlugin, ProtocPlugin)
 
 lazy val exampleApiDomain = (project in file("modules/example-api/domain"))
   .configs(Common.Settings.DebugTest)
@@ -138,7 +116,6 @@ lazy val exampleApiDomain = (project in file("modules/example-api/domain"))
   .dependsOn(
     sharedLib % "test->test;compile->compile;test->compile"
   )
-  .disablePlugins(PlayScala, ProtocPlugin)
 
 /** ***********************************************
   * Other

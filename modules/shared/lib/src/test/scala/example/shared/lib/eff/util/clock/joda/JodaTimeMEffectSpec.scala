@@ -6,13 +6,13 @@ import org.mockito.Mockito
 
 import example.shared.lib.test.AbstractSpecification
 
-import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.JodaTimeMInterpretationTypes.JodaTimeMStack
-import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.interpreter.JodaTimeMInterpreterImpl
+import example.shared.lib.eff.util.clock.joda.JodaTimeMInterpretationTypes.JodaTimeMStack
+import example.shared.lib.eff.util.clock.joda.interpreter.JodaTimeMInterpreterImpl
 
 class JodaTimeMEffectSpec extends AbstractSpecification {
 
   import Mockito._
-  import jp.eigosapuri.es.shared.lib.eff.util.clock.joda.JodaTimeMEffect._
+  import example.shared.lib.eff.util.clock.joda.JodaTimeMEffect._
 
   trait SetUp {
     val now                       = new DateTime(2018, 8, 13, 10, 30)

@@ -9,8 +9,6 @@ import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ Await, ExecutionContext, Future }
 import scala.util.{ Failure, Success }
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 object DBIOInstances extends DBIOInstances
 
 /**

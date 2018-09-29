@@ -4,11 +4,11 @@ import org.atnos.eff.{ <=, |=, Fx }
 
 import cats.data.Reader
 
-import jp.eigosapuri.es.shared.lib.eff.db.slick.DBComponent
+import example.shared.lib.eff.db.slick.DBComponent
 import _root_.slick.dbio.DBIO
 import monix.eval.Task
 
-import jp.eigosapuri.es.shared.lib.eff.ErrorEither
+import example.shared.lib.eff.ErrorEither
 
 object DBIOTypes {
   type _dbio[R]     = DBIO |= R

@@ -8,7 +8,7 @@ import java.time.DayOfWeek
 
 import scala.language.implicitConversions
 
-import jp.eigosapuri.es.shared.lib.pimp.RichDateTime.YearWeek
+import example.shared.lib.pimp.RichDateTime.YearWeek
 
 case class RichDateTime(underlying: DateTime) {
 
