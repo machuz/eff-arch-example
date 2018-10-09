@@ -107,12 +107,11 @@ object SharedProject {
 //          grpcDeps ++
       jwtDeps ++
       dbDeps ++
-      redisDeps ++
       awsDeps ++
-      playJsonDeps ++
       mailDeps ++
-      wsDeps ++
       httpDeps ++
+      redisDeps ++
+      excelDeps ++
       Common.Dependencies.testDeps
 
       lazy val grpcDeps = Seq(
@@ -124,15 +123,10 @@ object SharedProject {
         )
 
       lazy val dbDeps = Seq(
-        "com.h2database"     % "h2"                     % "1.4.193",
-        "mysql"              % "mysql-connector-java"   % "5.1.36",
-        "com.typesafe.slick" %% "slick-hikaricp"        % "3.2.2",
-        "com.typesafe.play"  %% "play-slick"            % "3.0.0",
-        "com.typesafe.play"  %% "play-slick-evolutions" % "3.0.0"
-      )
-
-      lazy val redisDeps = Seq(
-//        "net.debasishg" %% "redisclient" % "3.0"
+        "com.h2database"  % "h2"                   % "1.4.197",
+        "mysql"           % "mysql-connector-java" % "8.0.12",
+        "org.scalikejdbc" %% "scalikejdbc"         % "3.1.0",
+        "com.zaxxer"      % "HikariCP"             % "3.2.0"
       )
 
       lazy val akkaDeps = Seq(
@@ -148,11 +142,6 @@ object SharedProject {
         "software.amazon.awssdk" % "regions"               % "2.0.1"
       )
 
-      lazy val playJsonDeps = Seq(
-        "net.sf.json-lib" % "json-lib"              % "2.4" classifier "jdk15",
-        "ai.x"            %% "play-json-extensions" % "0.10.0"
-      )
-
       lazy val mailDeps = Seq(
         "eu.medsea.mimeutil" % "mime-util" % "2.1.3" exclude ("org.slf4j", "slf4j-log4j12")
       )
@@ -164,26 +153,24 @@ object SharedProject {
         "com.softwaremill.sttp" %% "async-http-client-handler-scalaz" % "0.0.13"
       )
 
-      lazy val wsDeps = Seq(
-        "com.typesafe.play" %% "play-ahc-ws-standalone"  % "1.1.3",
-        "com.typesafe.play" %% "play-ws-standalone-json" % "1.1.3",
-        "com.typesafe.play" %% "play-ws-standalone-xml"  % "1.1.3"
+      lazy val excelDeps = Seq(
+        "info.folone" %% "poi-scala" % "0.18"
       )
+
+      lazy val redisDeps = Seq(
+        "com.github.etaty" %% "rediscala" % "1.8.0"
+      )
+
     }
 
     object LibPj {
       lazy val Deps =
-      excelDeps ++
       circeDeps ++
-      playJsonDeps ++
-      playIterateeDeps ++
       utilsDeps ++
       loggingDeps ++
-      Common.Dependencies.testDeps ++
-      dbTestDeps ++
-      redisDeps ++
       monixDeps ++
       effDeps ++
+      Common.Dependencies.testDeps ++
       Common.Dependencies.diDeps
 
       val monixVer = "2.3.2"
@@ -211,7 +198,6 @@ object SharedProject {
         "org.codehaus.janino"    % "janino"                     % "2.6.1",
         "com.jsuereth"           %% "scala-arm"                 % "2.0",
         "com.iheart"             %% "ficus"                     % "1.4.3",
-        "eu.bitwalker"           % "UserAgentUtils"             % "1.18",
         "joda-time"              % "joda-time"                  % "2.9.4"
       )
 
@@ -221,11 +207,6 @@ object SharedProject {
         "io.sentry"                  % "sentry-logback"  % "1.7.5"
       )
 
-      lazy val playJsonDeps = Seq(
-        "com.typesafe.play" %% "play-json"      % "2.6.3",
-        "com.typesafe.play" %% "play-json-joda" % "2.6.3"
-      )
-
       val circeVer = "0.9.3"
       lazy val circeDeps = Seq(
         "io.circe"      %% "circe-core"           % circeVer,
@@ -233,27 +214,9 @@ object SharedProject {
         "io.circe"      %% "circe-generic-extras" % circeVer,
         "io.circe"      %% "circe-parser"         % circeVer,
         "io.circe"      %% "circe-java8"          % circeVer,
-        "com.pauldijou" %% "jwt-circe"            % "0.16.0"
+        "com.pauldijou" %% "jwt-circe"            % "0.18.0"
       )
 
-      lazy val playIterateeDeps = Seq(
-        "com.typesafe.play" %% "play-iteratees"                  % "2.6.1",
-        "com.typesafe.play" %% "play-iteratees-reactive-streams" % "2.6.1"
-      )
-
-      lazy val excelDeps = Seq(
-        "info.folone" %% "poi-scala" % "0.18"
-      )
-
-      lazy val redisDeps = Seq(
-        "com.github.etaty" %% "rediscala" % "1.8.0"
-      )
-
-      lazy val dbTestDeps = Seq(
-        // TOOD: DBIO型のため
-        "com.typesafe.slick"   %% "slick"             % "3.2.2",
-        "com.github.tototoshi" %% "slick-joda-mapper" % "2.3.0"
-      )
     }
   }
 
