@@ -9,5 +9,5 @@ case class User(
   createdAt: ZonedDateTime,
   updatedAt: ZonedDateTime
 ) extends Entity[UserId] {
-  override  val identifier: UserId = id
+  override val identifier: UserId = id
 }
