@@ -1,7 +1,5 @@
 package example.shared.lib.dddSupport
 
-import play.api.libs.json.JsError
-
 sealed trait Error                                 extends Throwable
 sealed class ErrorHasUnderlay(underlay: Throwable) extends Error
 
@@ -12,7 +10,6 @@ object Error {
   final case object Generic                      extends Error
   final case class ExternalApiError(msg: String) extends Error
   final case class InternalApiError(msg: String) extends Error
-  final case class JsonError(jsError: JsError)   extends Error
 
   final case class NonFatalError(
     underlying: Throwable,

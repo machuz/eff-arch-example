@@ -126,7 +126,8 @@ object SharedProject {
         "com.h2database"  % "h2"                   % "1.4.197",
         "mysql"           % "mysql-connector-java" % "8.0.12",
         "org.scalikejdbc" %% "scalikejdbc"         % "3.1.0",
-        "com.zaxxer"      % "HikariCP"             % "3.2.0"
+        "com.zaxxer"      % "HikariCP"             % "3.2.0",
+        "org.flywaydb"    % "flyway-core"          % "5.0.7",
       )
 
       lazy val akkaDeps = Seq(

@@ -66,7 +66,6 @@ lazy val sharedSecondaryAdapter = (project in file("modules/shared/secondary-ada
   .dependsOn(
     sharedLib % "test->test;compile->compile;test->compile"
   )
-  .enablePlugins(FlywayPlugin)
 
 lazy val sharedLib = (project in file("modules/shared/lib"))
   .configs(Common.Settings.DebugTest)

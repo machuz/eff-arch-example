@@ -1,6 +1,5 @@
 import sbt._
 import sbt.Keys._
-
 object ExampleApiProject {
 
   object Settings {
@@ -12,12 +11,12 @@ object ExampleApiProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := true
       ) ++
-        Common.Settings.defaultConf(pjName, adapterName) ++
+      Common.Settings.defaultConf(pjName, adapterName) ++
 //        Common.Settings.playSettings ++
-        Common.Settings.buildSettings ++
-        Common.Settings.commonSettings ++
-        Common.Settings.commonTestSettings ++
-        Common.Settings.confPathSettings
+      Common.Settings.buildSettings ++
+      Common.Settings.commonSettings ++
+      Common.Settings.commonTestSettings ++
+      Common.Settings.confPathSettings
     }
 
     val internalAdapterPjSettings = {
@@ -27,12 +26,12 @@ object ExampleApiProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := true
       ) ++
-        Common.Settings.defaultConf(pjName, adapterName) ++
+      Common.Settings.defaultConf(pjName, adapterName) ++
 //        Common.Settings.grpcSettings ++
-        Common.Settings.buildSettings ++
-        Common.Settings.confPathSettings ++
-        Common.Settings.commonSettings ++
-        Common.Settings.commonTestSettings
+      Common.Settings.buildSettings ++
+      Common.Settings.confPathSettings ++
+      Common.Settings.commonSettings ++
+      Common.Settings.commonTestSettings
     }
 
     val secondaryAdapterPjSettings = {
@@ -40,12 +39,12 @@ object ExampleApiProject {
       val adapterName = "secondary-adapter"
       Seq(
         name := s"$pjName-$adapterName",
-        parallelExecution in Test := false
+        parallelExecution in Test := false,
       ) ++
-        Common.Settings.defaultConf(pjName, adapterName) ++
-        Common.Settings.confPathSettings ++
-        Common.Settings.commonSettings ++
-        Common.Settings.commonTestSettings
+      Common.Settings.defaultConf(pjName, adapterName) ++
+      Common.Settings.confPathSettings ++
+      Common.Settings.commonSettings ++
+      Common.Settings.commonTestSettings
     }
 
     val useCasePjSettings = Seq(
@@ -53,16 +52,16 @@ object ExampleApiProject {
       parallelExecution in Test := true,
       fork in Test := true
     ) ++
-      Common.Settings.commonSettings ++
-      Common.Settings.commonTestSettings
+    Common.Settings.commonSettings ++
+    Common.Settings.commonTestSettings
 
     val domainPjSettings = Seq(
       name := """example-api-domain""",
       parallelExecution in Test := true,
       fork in Test := true
     ) ++
-      Common.Settings.commonSettings ++
-      Common.Settings.commonTestSettings
+    Common.Settings.commonSettings ++
+    Common.Settings.commonTestSettings
 
   }
 
@@ -70,21 +69,21 @@ object ExampleApiProject {
     lazy val externalAdapterPjDeps =
 //      Common.Dependencies.playDeps ++
 //        Common.Dependencies.apiDocDeps ++
-        Common.Dependencies.testDeps
+      Common.Dependencies.testDeps
 
     lazy val internalAdapterPjDeps =
       Common.Dependencies.testDeps
 
     lazy val secondaryAdapterPjDeps =
 //      Common.Dependencies.deprecatedDeps ++
-        Common.Dependencies.testDeps
+      Common.Dependencies.testDeps
 
     lazy val useCasePjDeps =
-      Common.Dependencies.diDeps ++
-        Common.Dependencies.testDeps
+    Common.Dependencies.diDeps ++
+    Common.Dependencies.testDeps
 
     lazy val domainPjDeps = Seq(
-    )
+      )
 
   }
 }

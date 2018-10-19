@@ -7,7 +7,6 @@ import sbt._
 import sbtassembly.AssemblyKeys._
 import sbtassembly.AssemblyPlugin.autoImport.{ assembly => _, assemblyMergeStrategy => _ }
 
-
 object Common {
 
   private def getScalaMajorMinor(v: String): Option[String] =
