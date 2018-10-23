@@ -9,12 +9,12 @@ class UserRepositoryImpl extends UserRepository {
   override def store(entity: User): User             = ???
   override def remove(id: UserId): Unit              = ???
 
-  sql"""
-create table members (
-  id serial not null primary key,
-  name varchar(64),
-  created_at timestamp not null
-)
-""".execute.apply()
+//  sql"""
+//create table members (
+//  id serial not null primary key,
+//  name varchar(64),
+//  created_at timestamp not null
+//)
+//""".execute.apply()
 
 }
