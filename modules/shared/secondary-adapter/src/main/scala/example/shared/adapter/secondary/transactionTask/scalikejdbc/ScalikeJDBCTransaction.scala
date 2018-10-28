@@ -3,10 +3,10 @@ package example.shared.adapter.secondary.transactionTask.scalikejdbc
 import example.shared.lib.transactionTask._
 import scalikejdbc.DBSession
 
-abstract class ScalikeJDBCTransaction(val session: DBSession)
+abstract class ScalikeJdbcTransaction(val session: DBSession)
 
-class ScalikeJDBCReadTransaction(session: DBSession) extends ScalikeJDBCTransaction(session) with ReadTransaction
+class ScalikeJdbcReadTransaction(session: DBSession) extends ScalikeJdbcTransaction(session) with ReadTransaction
 
-class ScalikeJDBCReadWriteTransaction(session: DBSession)
-  extends ScalikeJDBCTransaction(session)
+class ScalikeJdbcReadWriteTransaction(session: DBSession)
+  extends ScalikeJdbcTransaction(session)
   with ReadWriteTransaction
