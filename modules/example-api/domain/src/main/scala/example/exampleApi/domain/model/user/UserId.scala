@@ -1,5 +1,20 @@
 package example.exampleApi.domain.model.user
 
-import example.shared.lib.dddSupport.domain.Identifier
+import org.atnos.eff.Eff
+
+import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier }
+import example.shared.lib.eff._
+import example.shared.lib.eff.util.idGen.IdGen
 
 case class UserId(value: String) extends Identifier[String]
+
+object UserId {
+
+  def generate[R: _idgen]: Eff[R, UserId] = {
+    val gen = new IdGenerator[UserId] {
+      override def generate(value: String): UserId = UserId(value)
+    }
+    IdGen.generate[UserId, R](gen)
+  }
+
+}
