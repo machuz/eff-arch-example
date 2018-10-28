@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 
 case class User(
   id: UserId,
-  name: String,
+  name: Option[String],
   createdAt: ZonedDateTime,
   updatedAt: ZonedDateTime
 ) extends Entity[UserId] {
