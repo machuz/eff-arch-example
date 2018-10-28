@@ -123,7 +123,7 @@ object SharedProject {
         )
 
       lazy val dbDeps = Seq(
-        "com.h2database"  % "h2"                   % "1.4.197",
+        "com.h2database"  % "h2"                   % "1.4.197" % Test,
         "mysql"           % "mysql-connector-java" % "8.0.12",
         "org.scalikejdbc" %% "scalikejdbc"         % "3.1.0",
         "com.zaxxer"      % "HikariCP"             % "3.2.0",
