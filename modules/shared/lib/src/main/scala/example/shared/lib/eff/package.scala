@@ -6,11 +6,16 @@ import org.atnos.eff.{ <=, |=, Fx }
 import cats.data.Writer
 import example.shared.lib.dddSupport.Error
 import example.shared.lib.eff.db.transactionTask.TransactionTaskCreation
-import example.shared.lib.eff.util.clock.joda.JodaTimeM
-import example.shared.lib.eff.util.idGen.IdGen
+import example.shared.lib.eff.util.clock.java8.{ ClockM, ClockMEffect }
+import example.shared.lib.eff.util.idGen.{ IdGen, IdGenEffect }
 import example.shared.lib.log.LogMessage
 
-package object eff extends TransactionTaskCreation with TaskEffect {
+/**
+  * Note:
+  * InterpreterがlibいあるものはEffectをmix-inするが、secondaryAdapternにあるものはCreationだけmix-inする
+  */
+package object eff extends TransactionTaskCreation with TaskEffect with ClockMEffect with IdGenEffect {
+
   type WriterLogMsg[A]  = Writer[LogMessage, A]
   type _writerLogMsg[R] = WriterLogMsg |= R
 
@@ -19,6 +24,8 @@ package object eff extends TransactionTaskCreation with TaskEffect {
   type _errorEither[R]       = ErrorEither |= R
   type _nothing[R]           = Nothing |= R
 
-  type ModelApplyStack = Fx.fx2[IdGen, JodaTimeM]
+  type IdGenStack      = Fx.fx1[IdGen]
+  type ClockMStack     = Fx.fx1[ClockM]
+  type ModelApplyStack = Fx.fx2[IdGen, ClockM]
 
 }
