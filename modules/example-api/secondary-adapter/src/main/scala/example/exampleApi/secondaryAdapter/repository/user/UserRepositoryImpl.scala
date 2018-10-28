@@ -2,13 +2,14 @@ package example.exampleApi.secondaryAdapter.repository.user
 
 import org.atnos.eff.Eff
 
+import scalikejdbc._
+
 import example.exampleApi.domain.model.user.{ User, UserId }
 import example.exampleApi.domain.repository.user.UserRepository
 import example.exampleApi.secondaryAdapter.db.dataModel.UserDataModel
 import example.shared.adapter.secondary.transactionTask.scalikejdbc._
 import example.shared.adapter.secondary.rdb.scalikejdbc.pimp.RichMySQLSyntaxSupport._
 import example.shared.lib.eff._
-import scalikejdbc._
 
 class UserRepositoryImpl extends UserRepository with UserConverter {
 
