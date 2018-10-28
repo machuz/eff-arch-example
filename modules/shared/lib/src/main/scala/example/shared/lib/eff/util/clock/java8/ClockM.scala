@@ -4,7 +4,7 @@ import java.time.{ LocalDateTime, ZoneOffset, ZonedDateTime }
 
 sealed abstract class ClockM[+A]
 
-object ClockM {
+object ClockM extends ClockMCreation {
 
   case object LocalNow extends ClockM[LocalDateTime]
 

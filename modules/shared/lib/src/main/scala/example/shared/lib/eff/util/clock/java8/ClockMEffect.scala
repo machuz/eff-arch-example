@@ -15,15 +15,16 @@ object ClockMInterpretationTypes {
   type _readerClock[R] = ReaderClock |= R
 }
 
-trait ClockMOps extends ClockMInterpreter {
+trait ClockMOps {
   implicit class ClockMOps[R, A](effects: Eff[R, A]) {
-    def runClock[U](
-      implicit m1: Member.Aux[ClockM, R, U],
+    def runClock[U](clock: Clock)(
+      implicit interpreter: ClockMInterpreter,
+      m1: Member.Aux[ClockM, R, U],
       m2: Member[ReaderClock, U]
     ): Eff[m2.Out, A] = {
-      run(effects).runReader(Clock.systemUTC())(m2)
+      interpreter.run(effects).runReader(clock)(m2)
     }
   }
 }
 
-object ClockMEffect extends ClockMOps with ClockMCreation
+trait ClockMEffect extends ClockMOps with ClockMTypes

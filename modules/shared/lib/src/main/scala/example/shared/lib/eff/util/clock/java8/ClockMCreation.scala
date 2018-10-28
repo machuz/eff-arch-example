@@ -5,9 +5,8 @@ import org.atnos.eff.Eff
 import java.time.{ LocalDateTime, ZoneOffset, ZonedDateTime }
 
 import example.shared.lib.eff.util.clock.java8.ClockM._
-import example.shared.lib.eff.util.clock.java8.ClockMTypes._clockm
 
-trait ClockMCreation {
+trait ClockMCreation extends ClockMTypes {
 
   def localNow[R: _clockm]: Eff[R, LocalDateTime] =
     Eff.send[ClockM, R, LocalDateTime](LocalNow)

@@ -11,7 +11,15 @@ import example.shared.lib.eff.util.clock.java8.ClockM
 import example.shared.lib.eff.util.clock.java8.ClockM._
 import example.shared.lib.eff.util.clock.java8.ClockMInterpretationTypes._
 
-trait ClockMInterpreter {
+abstract class ClockMInterpreter {
+
+  def run[R, U, A](effects: Eff[R, A])(
+    implicit m: Member.Aux[ClockM, R, U],
+    m1: _readerClock[U]
+  ): Eff[U, A]
+}
+
+class ClockMInterpreterImpl extends ClockMInterpreter {
 
   def run[R, U, A](effects: Eff[R, A])(
     implicit m: Member.Aux[ClockM, R, U],
