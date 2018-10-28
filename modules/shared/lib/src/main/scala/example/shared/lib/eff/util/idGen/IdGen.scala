@@ -1,6 +1,6 @@
 package example.shared.lib.eff.util.idGen
 
-import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier, UUIDIdGenerator }
+import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier }
 
 sealed abstract class IdGen[+A]
 

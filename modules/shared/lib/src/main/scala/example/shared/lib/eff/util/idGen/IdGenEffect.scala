@@ -1,12 +1,8 @@
 package example.shared.lib.eff.util.idGen
 
-import org.atnos.eff.{ Eff, Fx, Member }
+import org.atnos.eff.{ Eff, Member }
 
 import example.shared.lib.eff.util.idGen.interpreter.IdGenInterpreter
-
-object IdGenInterpretationTypes {
-  type IdGenStack = Fx.fx1[IdGen]
-}
 
 trait IdGenOps {
 
@@ -18,4 +14,4 @@ trait IdGenOps {
   }
 }
 
-object IdGenEffect extends IdGenOps with IdGenCreation {}
+trait IdGenEffect extends IdGenOps with IdGenTypes
