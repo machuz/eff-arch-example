@@ -80,7 +80,24 @@ object SharedProject {
   object Dependencies {
 
     object ExternalAdapterPj {
-      lazy val Deps = Seq()
+      lazy val Deps = akkaDeps ++ circeDeps
+
+      lazy val akkaDeps = Seq(
+        "com.typesafe.akka" %% "akka-actor"  % "2.5.4",
+        "com.typesafe.akka" %% "akka-slf4j"  % "2.5.4",
+        "com.typesafe.akka" %% "akka-http"   % "10.1.5",
+        "com.typesafe.akka" %% "akka-stream" % "2.5.12"
+      )
+      val circeVer = "0.9.3"
+      lazy val circeDeps = Seq(
+        "io.circe"      %% "circe-core"           % circeVer,
+        "io.circe"      %% "circe-generic"        % circeVer,
+        "io.circe"      %% "circe-generic-extras" % circeVer,
+        "io.circe"      %% "circe-parser"         % circeVer,
+        "io.circe"      %% "circe-java8"          % circeVer,
+        "com.pauldijou" %% "jwt-circe"            % "0.18.0",
+        "de.heikoseeberger" %% "akka-http-circe" % "1.22.0"
+      )
     }
 
     object InternalAdapterPj {
@@ -131,8 +148,10 @@ object SharedProject {
       )
 
       lazy val akkaDeps = Seq(
-        "com.typesafe.akka" %% "akka-actor" % "2.5.4",
-        "com.typesafe.akka" %% "akka-slf4j" % "2.5.4"
+        "com.typesafe.akka" %% "akka-actor"  % "2.5.4",
+        "com.typesafe.akka" %% "akka-slf4j"  % "2.5.4",
+        "com.typesafe.akka" %% "akka-http"   % "10.1.5",
+        "com.typesafe.akka" %% "akka-stream" % "2.5.12"
       )
 
       lazy val awsDeps = Seq(

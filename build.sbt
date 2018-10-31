@@ -83,6 +83,9 @@ lazy val exampleApiExternalAdapter = (project in file("modules/example-api/exter
   .dependsOn(
     sharedExternalAdapter % "test->test;compile->compile;test->compile"
   )
+  .dependsOn(
+    exampleApiUseCase % "test->test;compile->compile;test->compile"
+  )
 
 lazy val exampleApiInternalAdapter = (project in file("modules/example-api/internal-adapter"))
   .configs(Common.Settings.DebugTest)
