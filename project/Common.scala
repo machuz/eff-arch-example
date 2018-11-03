@@ -69,6 +69,8 @@ object Common {
       scalafmtOnCompile := true
     )
     lazy val DebugTest = config("debug") extend Test
+    lazy val MysqlTest = config("mysql") extend Test
+    lazy val TestSeq = Seq(DebugTest, MysqlTest)
 
     // test共通設定
     lazy val commonTestSettings = Seq(
@@ -81,7 +83,8 @@ object Common {
       fork in DebugTest := true,
       javaOptions in DebugTest ++= Seq("-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=41230"),
       scalafmtTestOnCompile := true
-    ) ++ inConfig(DebugTest)(Defaults.testTasks)
+    ) ++ inConfig(DebugTest)(Defaults.testTasks) ++ inConfig(MysqlTest)(Defaults.testTasks)
+
 
     // module testの共通設定
     lazy val commonModuleTestSettings = Seq(
@@ -95,6 +98,9 @@ object Common {
         javaOptions in Test ++= Seq(
           s"-Dconfig.file=${sys.props.getOrElse("config.file", default = s"conf/partial/$pjName/$adapterName/test_h2.conf")}"
         ),
+        javaOptions in MysqlTest ++= Seq(
+          s"-Dconfig.file=${sys.props.getOrElse("config.file", default = s"conf/partial/$pjName/$adapterName/test_mysql.conf")}"
+        ),
         javaOptions in run ++= Seq(
           s"-Dconfig.file=${sys.props.getOrElse("config.file", default = s"conf/partial/$pjName/$adapterName/local_h2.conf")}"
         )
@@ -107,11 +113,10 @@ object Common {
     )
 
     lazy val buildSettings = Seq(
-//      // sbt-native-packager
+      // sbt-native-packager
       maintainer in Docker := "Tsubasa Matsukawa <w_ma2k8@me.com>",
       dockerBaseImage := "java:8-jdk-alpine",
       dockerUpdateLatest := true,
-      dockerBuildOptions in publishLocal ++= Seq("-t", "latest"),
       // aggregateしない
       aggregate in console := false,
       aggregate in run := false,
