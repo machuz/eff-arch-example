@@ -14,7 +14,6 @@ object SharedProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := false
       ) ++
-      Common.Settings.defaultConf(pjName, adapterName) ++
       Common.Settings.commonSettings ++
       Common.Settings.commonTestSettings ++
       Common.Settings.confPathSettings
@@ -27,7 +26,6 @@ object SharedProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := false
       ) ++
-      Common.Settings.defaultConf(pjName, adapterName) ++
       Common.Settings.commonSettings ++
       Common.Settings.commonTestSettings ++
       Common.Settings.confPathSettings
@@ -40,7 +38,6 @@ object SharedProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := false
       ) ++
-      Common.Settings.defaultConf(pjName, adapterName) ++
       Common.Settings.commonSettings ++
       Common.Settings.commonTestSettings ++
       Common.Settings.confPathSettings
@@ -53,7 +50,6 @@ object SharedProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := false
       ) ++
-      Common.Settings.defaultConf(pjName, adapterName) ++
       Common.Settings.commonSettings ++
       Common.Settings.commonTestSettings ++
       Common.Settings.confPathSettings
@@ -86,7 +82,7 @@ object SharedProject {
       val akkaHttpVer = "10.1.5"
       lazy val akkaDeps = Seq(
         "com.typesafe.akka" %% "akka-http" % akkaHttpVer,
-//        "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVer % Test,
+        "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVer % Test,
         "com.typesafe.akka" %% "akka-testkit" % akkaVer % Test,
         "com.typesafe.akka" %% "akka-actor"   % akkaVer,
         "com.typesafe.akka" %% "akka-slf4j"   % akkaVer,
@@ -220,8 +216,9 @@ object SharedProject {
 
       lazy val loggingDeps = Seq(
         "com.typesafe.scala-logging" %% "scala-logging"  % "3.9.0",
-        "ch.qos.logback"             % "logback-classic" % "1.1.3",
-        "io.sentry"                  % "sentry-logback"  % "1.7.5"
+        "ch.qos.logback"             % "logback-classic" % "1.2.3",
+        "org.slf4j"                  % "slf4j-api"       % "1.7.25"
+//        "io.sentry"                  % "sentry-logback"  % "1.7.5"
       )
 
       val circeVer = "0.9.3"
