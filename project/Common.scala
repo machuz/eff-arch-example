@@ -1,5 +1,8 @@
 import com.typesafe.sbt.SbtGit.git
 
+import com.typesafe.sbt.SbtNativePackager.autoImport._
+import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport._
+import com.typesafe.sbt.packager.universal.UniversalPlugin.autoImport._
 import com.lucidchart.sbt.scalafmt.ScalafmtCorePlugin.autoImport._
 
 import sbt.Keys._
@@ -58,7 +61,7 @@ object Common {
         "Typesafe Snapshots" at "http://repo.typesafe.com/typesafe/snapshots/",
         "bintray/non" at "http://dl.bintray.com/non/maven"
       ),
-      addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.4"),
+      addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.8"),
       addCompilerPlugin("org.scalamacros" % "paradise"        % "2.1.0" cross CrossVersion.full),
       sources in doc in Compile := Seq.empty,
       sources in doc in update := Seq.empty,
@@ -105,10 +108,10 @@ object Common {
 
     lazy val buildSettings = Seq(
 //      // sbt-native-packager
-//      maintainer in Docker := "Tsubasa Matsukawa <w_ma2k8@me.com>",
-//      dockerBaseImage := "anapsix/alpine-java:8",
-//      dockerUpdateLatest := true,
-//      dockerBuildOptions in publishLocal ++= Seq("-t", "latest"),
+      maintainer in Docker := "Tsubasa Matsukawa <w_ma2k8@me.com>",
+      dockerBaseImage := "java:8-jdk-alpine",
+      dockerUpdateLatest := true,
+      dockerBuildOptions in publishLocal ++= Seq("-t", "latest"),
       // aggregateしない
       aggregate in console := false,
       aggregate in run := false,
