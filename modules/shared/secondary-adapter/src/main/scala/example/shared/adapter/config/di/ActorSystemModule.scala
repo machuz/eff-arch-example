@@ -3,12 +3,14 @@ package example.shared.adapter.config.di
 import com.google.inject.AbstractModule
 
 import akka.actor.ActorSystem
-import example.shared.adapter.secondary.akka.ActorSystemProvider
+import akka.stream.ActorMaterializer
+import example.shared.adapter.secondary.akka.{ ActorMaterializerProvider, ActorSystemProvider }
 
 class ActorSystemModule extends AbstractModule {
 
   def configure(): Unit = {
     bind(classOf[ActorSystem]).toProvider(classOf[ActorSystemProvider])
+    bind(classOf[ActorMaterializer]).toProvider(classOf[ActorMaterializerProvider])
   }
 
 }
