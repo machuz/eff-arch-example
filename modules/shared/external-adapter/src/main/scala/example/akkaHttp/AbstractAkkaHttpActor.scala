@@ -3,10 +3,10 @@ import akka.actor.{ Actor, ActorLogging }
 
 abstract class AbstractAkkaHttpActor extends Actor with ActorLogging {
 
-  def preStart(): Unit
+  override def preStart(): Unit
 
-  def postStop(): Unit
+  override def postStop(): Unit
 
-  def receive: Receive
+  override def receive: Receive
 
 }
