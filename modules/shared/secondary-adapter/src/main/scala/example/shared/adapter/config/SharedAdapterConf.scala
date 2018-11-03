@@ -4,6 +4,10 @@ import example.shared.adapter.config.support.ApplicationConfBase
 
 object SharedAdapterConf extends ApplicationConfBase {
 
+  object Akka {
+    lazy val actorSystemName = getStringOpt("akka.actorSystem.name").getOrElse("default")
+  }
+
   object Project {
     lazy val originUrl = getString("project.origin_url")
   }
