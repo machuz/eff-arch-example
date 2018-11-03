@@ -124,19 +124,4 @@ object Common {
     )
   }
 
-  object Dependencies {
-
-    val AIRFRAME_VERSION = "0.68"
-    lazy val diDeps = Seq(
-      "org.wvlet.airframe"           %% "airframe"            % AIRFRAME_VERSION,
-      "com.google.inject"            % "guice"                % "4.0",
-      "com.google.inject.extensions" % "guice-assistedinject" % "4.0"
-    )
-
-    lazy val testDeps = Seq(
-      "org.scalatest" %% "scalatest"  % "3.0.5"   % Test,
-      "org.mockito"   % "mockito-all" % "1.10.19" % Test
-    )
-  }
-
 }
