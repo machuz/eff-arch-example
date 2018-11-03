@@ -81,12 +81,11 @@ object SharedProject {
       val akkaVer     = "2.5.16"
       val akkaHttpVer = "10.1.5"
       lazy val akkaDeps = Seq(
-        "com.typesafe.akka" %% "akka-http" % akkaHttpVer,
+        "com.typesafe.akka" %% "akka-http"         % akkaHttpVer,
         "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVer % Test,
-        "com.typesafe.akka" %% "akka-testkit" % akkaVer % Test,
-        "com.typesafe.akka" %% "akka-actor"   % akkaVer,
-        "com.typesafe.akka" %% "akka-slf4j"   % akkaVer,
-        "com.typesafe.akka" %% "akka-stream"  % akkaVer
+        "com.typesafe.akka" %% "akka-testkit"      % akkaVer % Test,
+        "com.typesafe.akka" %% "akka-actor"        % akkaVer,
+        "com.typesafe.akka" %% "akka-slf4j"        % akkaVer
       )
 
       lazy val circeDeps = Seq(
@@ -123,7 +122,8 @@ object SharedProject {
       mailDeps ++
       httpDeps ++
       redisDeps ++
-      excelDeps
+      excelDeps ++
+      akkaDeps
 
       lazy val grpcDeps = Seq(
 //        "com.trueaccord.scalapb" %% "scalapb-runtime"      % scalapbVersion % "protobuf",
@@ -139,6 +139,10 @@ object SharedProject {
         "org.scalikejdbc" %% "scalikejdbc"         % "3.3.1",
         "com.zaxxer"      % "HikariCP"             % "3.2.0",
         "org.flywaydb"    % "flyway-core"          % "5.0.7",
+      )
+
+      lazy val akkaDeps = Seq(
+        "com.typesafe.akka" %% "akka-stream" % ExternalAdapterPj.akkaVer
       )
 
       lazy val awsDeps = Seq(
