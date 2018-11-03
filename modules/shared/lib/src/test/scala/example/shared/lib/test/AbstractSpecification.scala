@@ -3,9 +3,7 @@ package example.shared.lib.test
 import com.eaio.uuid.UUID
 
 import org.joda.time.{ DateTime, DateTimeZone, LocalDate }
-import org.atnos.eff.Fx
 
-import example.shared.lib.util.DateTimeUtils
 import org.joda.time.{ DateTime, LocalDate }
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.words.MatcherWords
@@ -13,7 +11,6 @@ import org.scalatest.{ MustMatchers, OptionValues, WordSpec }
 
 import monix.eval.Task
 import monix.execution.Scheduler
-import slick.dbio.DBIO
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, Awaitable, Future }
@@ -21,10 +18,7 @@ import scala.util.Random
 
 import scalaz.Monad
 
-import example.shared.lib.dddSupport.domain.{ EsRandom, Identifier, UUIDIdGenerator, UUIDIdGeneratorImpl }
-import example.shared.lib.eff.{ ErrorEither, WriterLogMsg }
-import example.shared.lib.eff.cache.CacheIO
-import example.shared.lib.eff.util.clock.joda.JodaTimeUtils
+import example.shared.lib.dddSupport.domain.{ EsRandom, Identifier, UUIDIdGenerator }
 
 /**
   * test用の抽象クラス
@@ -47,12 +41,6 @@ abstract class AbstractSpecification
       new Identifier[String] {
         override val value: String = uuid
       }.asInstanceOf[A]
-  }
-
-  // 時間を固定しておく
-  val fixedDate = new DateTime()
-  val testJodaTimeUtils = new JodaTimeUtils {
-    override def now: DateTime = fixedDate
   }
 
   // seed が同じ場合は同じ値になる
@@ -96,18 +84,7 @@ abstract class AbstractSpecification
 
   protected[this] def randomDateTime: DateTime = currentDateTime.plus(randomInt)
 
-  protected[this] def point[A](a: => A): DBIO[A] =
-    DBIO.successful(a)
-
-  protected[this] def error: DBIO[Nothing] =
-    DBIO.failed(new RuntimeException)
-
   protected[this] def values[A](fa: Future[A], duration: Duration = Duration.Inf): A =
     Await.result(fa, duration)
-
-  protected[this] implicit val dbiom: Monad[DBIO] = new Monad[DBIO] {
-    override def point[A](a: => A): DBIO[A]               = DBIO.successful(a)
-    override def bind[A, B](fa: DBIO[A])(f: A => DBIO[B]) = fa.flatMap(f)
-  }
 
 }
