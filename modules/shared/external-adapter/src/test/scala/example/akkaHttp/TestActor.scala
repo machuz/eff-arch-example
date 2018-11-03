@@ -8,17 +8,21 @@ class TestActor extends AbstractAkkaHttpActor {
 
   // HelloCommandを受け取ったらHelloReplyを返す
   override def receive: Receive = {
-    case TestActor.HelloCommand(name) =>
-      sender() ! TestActor.HelloReply(s"Hello $name!!")
+    case TestActor.HelloCommand(s) =>
+      sender() ! TestActor.HelloReply(s"Hello $s!!")
   }
 }
 
 object TestActor {
 
+  val name: String = "test"
+
   // 受信用メッセージ
-  final case class HelloCommand(name: String)
+  sealed trait ActorCommand
+  final case class HelloCommand(name: String) extends ActorCommand
 
   // 返信用メッセージ
-  final case class HelloReply(message: String)
+  sealed trait ActorReply
+  final case class HelloReply(message: String) extends ActorReply
 
 }
