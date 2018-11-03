@@ -81,7 +81,8 @@ lazy val exampleApiExternalAdapter = (project in file("modules/example-api/exter
   .settings(ExampleApiProject.Settings.externalAdapterPjSettings: _*)
   .settings(libraryDependencies ++= ExampleApiProject.Dependencies.externalAdapterPjDeps)
   .dependsOn(
-    sharedExternalAdapter % "test->test;compile->compile;test->compile"
+    sharedExternalAdapter      % "test->test;compile->compile;test->compile",
+    exampleApiSecondaryAdapter % "test->test;compile->compile;test->compile"
   )
 
 lazy val exampleApiInternalAdapter = (project in file("modules/example-api/internal-adapter"))
@@ -89,7 +90,8 @@ lazy val exampleApiInternalAdapter = (project in file("modules/example-api/inter
   .settings(ExampleApiProject.Settings.internalAdapterPjSettings: _*)
   .settings(libraryDependencies ++= ExampleApiProject.Dependencies.internalAdapterPjDeps)
   .dependsOn(
-    sharedInternalAdapter % "test->test;compile->compile;test->compile"
+    sharedInternalAdapter      % "test->test;compile->compile;test->compile",
+    exampleApiSecondaryAdapter % "test->test;compile->compile;test->compile"
   )
 
 lazy val exampleApiSecondaryAdapter = (project in file("modules/example-api/secondary-adapter"))
