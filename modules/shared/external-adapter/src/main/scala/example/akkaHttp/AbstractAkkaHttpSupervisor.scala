@@ -6,9 +6,11 @@ import scala.util.control.NonFatal
 import akka.actor.SupervisorStrategy.Resume
 import akka.actor.{ Actor, ActorLogging, OneForOneStrategy, SupervisorStrategy }
 
-abstract class AbstractSupervisor(maxRetries: Int, timeRange: Duration) extends Actor with ActorLogging {
+abstract class AbstractAkkaHttpSupervisor extends Actor with ActorLogging {
 
-  // 例外はログに出して継続
+  protected val maxRetries: Int
+  protected val timeRange: Duration
+
   override def supervisorStrategy: SupervisorStrategy =
     OneForOneStrategy(maxNrOfRetries = maxRetries, withinTimeRange = timeRange) {
       case NonFatal(ex) =>
