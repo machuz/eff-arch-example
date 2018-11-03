@@ -3,9 +3,9 @@ package example.akkaHttp
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.{ Matchers, WordSpecLike }
 
-class AbstractRouteSpec extends WordSpecLike with Matchers with ScalatestRouteTest {
+class AbstractAkkaHttpRouterSpec extends WordSpecLike with Matchers with ScalatestRouteTest {
 
-  val router = new AbstractAkkaHttpRoute
+  val router = new AbstractAkkaHttpRouter
 
   "hello route" should {
 
