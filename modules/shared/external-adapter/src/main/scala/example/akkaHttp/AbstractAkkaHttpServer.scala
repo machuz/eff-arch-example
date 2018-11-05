@@ -3,6 +3,7 @@ package example.akkaHttp
 import akka.Done
 import akka.actor.ActorSystem
 import akka.http.scaladsl.server.{ HttpApp, Route }
+import example.config.AkkaHttpServerConf
 import javax.inject.Inject
 
 import scala.concurrent.Await

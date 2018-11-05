@@ -8,7 +8,7 @@ import akka.http.scaladsl.server.Route
 import example.akkaHttp.{ AbstractAkkaHttpServer, AkkaHttpServerConf }
 
 object ExampleApiServer extends App {
-  
+
 }
 
 class ExampleApiServer @Inject()(

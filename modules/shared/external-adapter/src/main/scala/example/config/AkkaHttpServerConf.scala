@@ -1,4 +1,4 @@
-package example.akkaHttp
+package example.config
 
 import example.shared.adapter.config.support.ApplicationConfBase
 
