@@ -10,9 +10,9 @@ trait Injector
   with SharedSecondaryAdapterModules {
 
   val modules: Seq[Module] =
-    exampleSecondaryAdapterModules ++
-      sharedExternalAdapterModules ++
-      sharedSecondaryAdapterModules
+  exampleSecondaryAdapterModules ++
+  sharedExternalAdapterModules ++
+  sharedSecondaryAdapterModules
 
   val injector: com.google.inject.Injector = Guice.createInjector(modules: _*)
 

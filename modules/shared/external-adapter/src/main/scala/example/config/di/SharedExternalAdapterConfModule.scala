@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule
 
 import example.config.AkkaHttpServerConf
 
-
 class SharedExternalAdapterConfModule extends AbstractModule {
 
   def configure(): Unit = {

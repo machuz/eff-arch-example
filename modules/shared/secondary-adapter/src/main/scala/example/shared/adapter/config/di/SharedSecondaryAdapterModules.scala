@@ -3,9 +3,11 @@ package example.shared.adapter.config.di
 trait SharedSecondaryAdapterModules {
 
   val sharedSecondaryAdapterModules = Seq(
-    new AWSClientProviderModule(),
     new ActorSystemModule(),
-    new InterpreterModule()
+    new AWSClientProviderModule(),
+    new ExecutionContextModule(),
+    new InterpreterModule(),
+    new SharedSecondaryAdapterConfModule()
   )
 
 }
