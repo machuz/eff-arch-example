@@ -7,13 +7,13 @@ import example.akkaHttp.AbstractAkkaHttpRouter
 class ExampleController extends AbstractAkkaHttpRouter {
 
 
-  def routes: Route = showUser
+  def show: String = "I AM TARO"
 
-  private[this] def showUser: Route = path("yo") {
-    get {
-      complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say YO</h1>"))
-    }
-
-  }
+//  private[this] def showUser: Route = path("yo") {
+//    get {
+//      complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say YO</h1>"))
+//    }
+//
+//  }
 
 }

@@ -32,5 +32,11 @@ class ExampleApiServer @Inject()(
       get {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
       }
-    } ~ exampleController.routes
+    } ~
+    path("example") {
+      path("show") {
+        val result = exampleController.show
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, s"<h1>Say hello to akka-http $result</h1>"))
+      }
+    }
 }
