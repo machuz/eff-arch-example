@@ -2,24 +2,25 @@ package example.akkaHttp
 
 import akka.Done
 import akka.actor.{ ActorSystem, Terminated }
+import akka.event.Logging
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.server.{ HttpApp, Route }
-import akka.http.scaladsl.server.Directives._
 import example.config.AkkaHttpServerConf
-import javax.inject.Inject
 
-import scala.concurrent.{ Await, ExecutionContext, Future }
+import scala.concurrent.{ Await, ExecutionContext, Future, Promise }
 import scala.util.{ Failure, Success, Try }
 import akka.stream.ActorMaterializer
 
 import scala.concurrent.duration._
 
-abstract class AbstractAkkaHttpServer @Inject()(
-  akkaHttpServerConf: AkkaHttpServerConf
-)(
-  implicit actorSystem: ActorSystem,
-  ec: ExecutionContext
-) extends HttpApp {
+abstract class AbstractAkkaHttpServer extends HttpApp {
+
+  implicit val actorSystem: ActorSystem
+  implicit val actorMaterializer: ActorMaterializer
+  implicit val ec: ExecutionContext
+
+  val akkaHttpServerConf: AkkaHttpServerConf
 
   protected val host: String = akkaHttpServerConf.host
   protected val port: Int    = akkaHttpServerConf.port
@@ -30,7 +31,6 @@ abstract class AbstractAkkaHttpServer @Inject()(
 
   override protected def postServerShutdown(attempt: Try[Done], system: ActorSystem): Unit = {
     super.postServerShutdown(attempt, system)
-
     system.terminate()
     Await.result(system.whenTerminated, 30.seconds)
     ()

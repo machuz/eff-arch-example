@@ -5,6 +5,7 @@ import scala.util.control.NonFatal
 
 import akka.actor.SupervisorStrategy.Resume
 import akka.actor.{ Actor, ActorLogging, OneForOneStrategy, SupervisorStrategy }
+import akka.actor.SupervisorStrategy._
 
 abstract class AbstractAkkaHttpSupervisor extends Actor with ActorLogging {
 
