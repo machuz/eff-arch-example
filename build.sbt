@@ -124,6 +124,8 @@ lazy val exampleApiDomain = (project in file("modules/example-api/domain"))
   * ***********************************************/
 fork in Test := false
 
+cancelable in Global := true
+
 testOptions in Test += Tests.Argument("-oT")
 
 // disable publishing the main API jar
