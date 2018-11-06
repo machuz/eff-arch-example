@@ -19,7 +19,8 @@ object ExampleApiServer extends App with Injector {
 }
 
 class ExampleApiServer @Inject()(
-  override val akkaHttpServerConf: AkkaHttpServerConf
+  override val akkaHttpServerConf: AkkaHttpServerConf,
+  exampleRouter: ExampleRouter
 )(
   implicit override val actorSystem: ActorSystem,
   override val actorMaterializer: ActorMaterializer,
@@ -31,5 +32,5 @@ class ExampleApiServer @Inject()(
       get {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
       }
-    }
+    } ~ exampleRouter.routes
 }

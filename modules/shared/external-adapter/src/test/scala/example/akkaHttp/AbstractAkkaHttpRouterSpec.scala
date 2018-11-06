@@ -15,7 +15,7 @@ class AbstractAkkaHttpRouterSpec extends WordSpecLike with Matchers with Scalate
 
     "hello!!" in {
 
-      Get("/hello?name=ME") ~> router.helloRoute ~> check {
+      Get("/hello?name=ME") ~> router.routes ~> check {
         responseAs[String] shouldBe "Hello ME!!"
       }
     }
@@ -24,7 +24,7 @@ class AbstractAkkaHttpRouterSpec extends WordSpecLike with Matchers with Scalate
 
 class TestRouter extends AbstractAkkaHttpRouter {
   // nameパラメータを受け付けテキストを返信する
-  val helloRoute: Route = path("hello") {
+  override def routes: Route =  path("hello") {
     parameter('name) { name =>
       complete(StatusCodes.OK -> s"Hello $name!!")
     }
