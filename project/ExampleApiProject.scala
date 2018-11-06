@@ -66,24 +66,15 @@ object ExampleApiProject {
   }
 
   object Dependencies {
-    lazy val externalAdapterPjDeps =
-//      Common.Dependencies.playDeps ++
-//        Common.Dependencies.apiDocDeps ++
-      Common.Dependencies.testDeps
+    lazy val externalAdapterPjDeps = Seq()
 
-    lazy val internalAdapterPjDeps =
-      Common.Dependencies.testDeps
+    lazy val internalAdapterPjDeps = Seq()
 
-    lazy val secondaryAdapterPjDeps =
-//      Common.Dependencies.deprecatedDeps ++
-      Common.Dependencies.testDeps
+    lazy val secondaryAdapterPjDeps = Seq()
 
-    lazy val useCasePjDeps =
-    Common.Dependencies.diDeps ++
-    Common.Dependencies.testDeps
+    lazy val useCasePjDeps = Seq()
 
-    lazy val domainPjDeps = Seq(
-      )
+    lazy val domainPjDeps = Seq()
 
   }
 }

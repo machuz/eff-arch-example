@@ -2,7 +2,7 @@ package example.shared.lib.eff.db.transactionTask
 import org.atnos.eff.{ <=, |=, Fx }
 
 import example.shared.lib.eff.ErrorEither
-import example.shared.lib.transactionTask.{ ReadTransaction, ReadWriteTransaction, Transaction, TransactionTask }
+import example.shared.lib.transactionTask.{ Transaction, TransactionTask }
 import monix.eval.Task
 
 trait TransactionTaskTypes {

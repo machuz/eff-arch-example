@@ -3,13 +3,14 @@ package example.shared.adapter.config.di
 import com.google.inject.AbstractModule
 
 import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import example.shared.adapter.secondary.akka.{ ActorMaterializerProvider, ActorSystemProvider }
 
-// Play以外のAdapterでActorSystemが必要になった時に使用する
 class ActorSystemModule extends AbstractModule {
 
   def configure(): Unit = {
-    // TODO: configからActorSystem名を取得する
-    bind(classOf[ActorSystem]).toInstance(ActorSystem.apply("grpc"))
+    bind(classOf[ActorSystem]).toProvider(classOf[ActorSystemProvider])
+    bind(classOf[ActorMaterializer]).toProvider(classOf[ActorMaterializerProvider])
   }
 
 }

@@ -14,7 +14,6 @@ object SharedProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := false
       ) ++
-      Common.Settings.defaultConf(pjName, adapterName) ++
       Common.Settings.commonSettings ++
       Common.Settings.commonTestSettings ++
       Common.Settings.confPathSettings
@@ -27,7 +26,6 @@ object SharedProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := false
       ) ++
-      Common.Settings.defaultConf(pjName, adapterName) ++
       Common.Settings.commonSettings ++
       Common.Settings.commonTestSettings ++
       Common.Settings.confPathSettings
@@ -40,7 +38,6 @@ object SharedProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := false
       ) ++
-      Common.Settings.defaultConf(pjName, adapterName) ++
       Common.Settings.commonSettings ++
       Common.Settings.commonTestSettings ++
       Common.Settings.confPathSettings
@@ -53,7 +50,6 @@ object SharedProject {
         name := s"$pjName-$adapterName",
         parallelExecution in Test := false
       ) ++
-      Common.Settings.defaultConf(pjName, adapterName) ++
       Common.Settings.commonSettings ++
       Common.Settings.commonTestSettings ++
       Common.Settings.confPathSettings
@@ -80,7 +76,22 @@ object SharedProject {
   object Dependencies {
 
     object ExternalAdapterPj {
-      lazy val Deps = Seq()
+      lazy val Deps = akkaDeps ++ circeDeps
+
+      val akkaVer     = "2.5.16"
+      val akkaHttpVer = "10.1.5"
+      lazy val akkaDeps = Seq(
+        "com.typesafe.akka" %% "akka-http"         % akkaHttpVer,
+        "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVer % Test,
+        "com.typesafe.akka" %% "akka-testkit"      % akkaVer % Test,
+        "com.typesafe.akka" %% "akka-actor"        % akkaVer,
+        "com.typesafe.akka" %% "akka-slf4j"        % akkaVer
+      )
+
+      lazy val circeDeps = Seq(
+        "de.heikoseeberger" %% "akka-http-circe" % "1.22.0"
+      )
+
     }
 
     object InternalAdapterPj {
@@ -112,7 +123,7 @@ object SharedProject {
       httpDeps ++
       redisDeps ++
       excelDeps ++
-      Common.Dependencies.testDeps
+      akkaDeps
 
       lazy val grpcDeps = Seq(
 //        "com.trueaccord.scalapb" %% "scalapb-runtime"      % scalapbVersion % "protobuf",
@@ -131,8 +142,7 @@ object SharedProject {
       )
 
       lazy val akkaDeps = Seq(
-        "com.typesafe.akka" %% "akka-actor" % "2.5.4",
-        "com.typesafe.akka" %% "akka-slf4j" % "2.5.4"
+        "com.typesafe.akka" %% "akka-stream" % ExternalAdapterPj.akkaVer
       )
 
       lazy val awsDeps = Seq(
@@ -171,13 +181,13 @@ object SharedProject {
       loggingDeps ++
       monixDeps ++
       effDeps ++
-      Common.Dependencies.testDeps ++
-      Common.Dependencies.diDeps
+      testDeps ++
+      diDeps
 
       val monixVer = "2.3.2"
       lazy val monixDeps = Seq(
         "io.monix" %% "monix"           % monixVer,
-        "io.monix" %% "monix-scalaz-72" % monixVer
+        "io.monix" %% "monix-scalaz-72" % monixVer // scalazは消す
       )
 
       val effVer = "5.2.0"
@@ -187,25 +197,32 @@ object SharedProject {
         "org.atnos" %% "eff-monix"  % effVer
       )
 
+      // scalazは消す
       val scalazVer = "7.2.15"
       lazy val utilsDeps = Seq(
-        "org.scala-lang"         % "scala-library"              % Common.Settings.defaultScalaVersion,
-        "org.scalaz"             %% "scalaz-core"               % scalazVer,
-        "org.scalaz"             %% "scalaz-scalacheck-binding" % scalazVer % Test,
-        "com.codecommit"         %% "shims"                     % "1.2.1",
-        "com.github.scopt"       %% "scopt"                     % "3.5.0",
-        "com.eaio.uuid"          % "uuid"                       % "3.2",
-        "com.github.nscala-time" %% "nscala-time"               % "2.14.0",
-        "org.codehaus.janino"    % "janino"                     % "2.6.1",
-        "com.jsuereth"           %% "scala-arm"                 % "2.0",
-        "com.iheart"             %% "ficus"                     % "1.4.3",
-        "joda-time"              % "joda-time"                  % "2.9.4"
+        "org.typelevel"          %% "cats-core"    % "1.4.0",
+        "org.scala-lang"         % "scala-library" % Common.Settings.defaultScalaVersion,
+        "org.scalaz"             %% "scalaz-core"  % scalazVer,
+        "com.codecommit"         %% "shims"        % "1.2.1",
+        "com.github.scopt"       %% "scopt"        % "3.5.0",
+        "com.eaio.uuid"          % "uuid"          % "3.2",
+        "com.github.nscala-time" %% "nscala-time"  % "2.14.0",
+        "org.codehaus.janino"    % "janino"        % "2.6.1",
+        "com.jsuereth"           %% "scala-arm"    % "2.0",
+        "com.iheart"             %% "ficus"        % "1.4.3",
+        "joda-time"              % "joda-time"     % "2.9.4"
+      )
+
+      lazy val diDeps = Seq(
+        "com.google.inject"            % "guice"                % "4.0",
+        "com.google.inject.extensions" % "guice-assistedinject" % "4.0"
       )
 
       lazy val loggingDeps = Seq(
         "com.typesafe.scala-logging" %% "scala-logging"  % "3.9.0",
-        "ch.qos.logback"             % "logback-classic" % "1.1.3",
-        "io.sentry"                  % "sentry-logback"  % "1.7.5"
+        "ch.qos.logback"             % "logback-classic" % "1.2.3",
+        "org.slf4j"                  % "slf4j-api"       % "1.7.25"
+//        "io.sentry"                  % "sentry-logback"  % "1.7.5"
       )
 
       val circeVer = "0.9.3"
@@ -216,6 +233,13 @@ object SharedProject {
         "io.circe"      %% "circe-parser"         % circeVer,
         "io.circe"      %% "circe-java8"          % circeVer,
         "com.pauldijou" %% "jwt-circe"            % "0.18.0"
+      )
+
+      lazy val testDeps = Seq(
+        "org.scalatest"       %% "scalatest"                 % "3.0.5"   % Test,
+        "org.mockito"         % "mockito-all"                % "1.10.19" % Test,
+        "org.scalaz"          %% "scalaz-scalacheck-binding" % scalazVer % Test,
+        "com.danielasfregola" %% "random-data-generator"     % "2.6"     % Test
       )
 
     }

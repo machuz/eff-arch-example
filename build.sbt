@@ -17,7 +17,7 @@ lazy val allModules = Seq[ProjectReference](
   * root - 分離前&統合test用PJ
   * ***********************************************/
 lazy val root = (project in file("."))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(Common.Settings.commonSettings: _*)
   .settings(Common.Settings.commonTestSettings: _*)
   .settings(RootProject.Settings.rootSettings: _*)
@@ -33,7 +33,7 @@ lazy val root = (project in file("."))
   * shared - 共通コード
   * ***********************************************/
 lazy val sharedExternalAdapter = (project in file("modules/shared/external-adapter"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(SharedProject.Settings.externalAdapterPjSettings: _*)
   .settings(libraryDependencies ++= SharedProject.Dependencies.ExternalAdapterPj.Deps)
   .dependsOn(
@@ -42,7 +42,7 @@ lazy val sharedExternalAdapter = (project in file("modules/shared/external-adapt
   )
 
 lazy val sharedInternalAdapter = (project in file("modules/shared/internal-adapter"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(SharedProject.Settings.internalAdapterPjSettings: _*)
   .settings(libraryDependencies ++= SharedProject.Dependencies.InternalAdapterPj.Deps)
   .dependsOn(
@@ -51,7 +51,7 @@ lazy val sharedInternalAdapter = (project in file("modules/shared/internal-adapt
   )
 
 lazy val sharedStreamAdapter = (project in file("modules/shared/stream-adapter"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(SharedProject.Settings.streamAdapterPjSettings: _*)
   .settings(libraryDependencies ++= SharedProject.Dependencies.StreamAdapterPj.Deps)
   .dependsOn(
@@ -60,7 +60,7 @@ lazy val sharedStreamAdapter = (project in file("modules/shared/stream-adapter")
   )
 
 lazy val sharedSecondaryAdapter = (project in file("modules/shared/secondary-adapter"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(SharedProject.Settings.secondaryAdapterPjSettings: _*)
   .settings(libraryDependencies ++= SharedProject.Dependencies.SecondaryAdapterPj.Deps)
   .dependsOn(
@@ -68,7 +68,7 @@ lazy val sharedSecondaryAdapter = (project in file("modules/shared/secondary-ada
   )
 
 lazy val sharedLib = (project in file("modules/shared/lib"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(SharedProject.Settings.libPjSettings: _*)
   .settings(libraryDependencies ++= SharedProject.Dependencies.LibPj.Deps)
   .dependsOn()
@@ -77,23 +77,25 @@ lazy val sharedLib = (project in file("modules/shared/lib"))
   * exampleApi
   * ***********************************************/
 lazy val exampleApiExternalAdapter = (project in file("modules/example-api/external-adapter"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(ExampleApiProject.Settings.externalAdapterPjSettings: _*)
   .settings(libraryDependencies ++= ExampleApiProject.Dependencies.externalAdapterPjDeps)
   .dependsOn(
-    sharedExternalAdapter % "test->test;compile->compile;test->compile"
+    sharedExternalAdapter      % "test->test;compile->compile;test->compile",
+    exampleApiSecondaryAdapter % "test->test;compile->compile;test->compile"
   )
 
 lazy val exampleApiInternalAdapter = (project in file("modules/example-api/internal-adapter"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(ExampleApiProject.Settings.internalAdapterPjSettings: _*)
   .settings(libraryDependencies ++= ExampleApiProject.Dependencies.internalAdapterPjDeps)
   .dependsOn(
-    sharedInternalAdapter % "test->test;compile->compile;test->compile"
+    sharedInternalAdapter      % "test->test;compile->compile;test->compile",
+    exampleApiSecondaryAdapter % "test->test;compile->compile;test->compile"
   )
 
 lazy val exampleApiSecondaryAdapter = (project in file("modules/example-api/secondary-adapter"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(ExampleApiProject.Settings.secondaryAdapterPjSettings: _*)
   .settings(libraryDependencies ++= ExampleApiProject.Dependencies.secondaryAdapterPjDeps)
   .dependsOn(
@@ -102,7 +104,7 @@ lazy val exampleApiSecondaryAdapter = (project in file("modules/example-api/seco
   )
 
 lazy val exampleApiUseCase = (project in file("modules/example-api/usecase"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(ExampleApiProject.Settings.useCasePjSettings: _*)
   .settings(libraryDependencies ++= ExampleApiProject.Dependencies.useCasePjDeps)
   .dependsOn(
@@ -110,7 +112,7 @@ lazy val exampleApiUseCase = (project in file("modules/example-api/usecase"))
   )
 
 lazy val exampleApiDomain = (project in file("modules/example-api/domain"))
-  .configs(Common.Settings.DebugTest)
+  .configs(Common.Settings.TestSeq: _*)
   .settings(ExampleApiProject.Settings.domainPjSettings: _*)
   .settings(libraryDependencies ++= ExampleApiProject.Dependencies.domainPjDeps)
   .dependsOn(
@@ -121,6 +123,8 @@ lazy val exampleApiDomain = (project in file("modules/example-api/domain"))
   * Other
   * ***********************************************/
 fork in Test := false
+
+cancelable in Global := true
 
 testOptions in Test += Tests.Argument("-oT")
 

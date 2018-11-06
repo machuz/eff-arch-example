@@ -1,4 +1,4 @@
-package example.exampleApi.secondaryAdapter.repository
+package example.exampleApi.secondaryAdapter.config.di
 
 import com.google.inject.AbstractModule
 

@@ -7,15 +7,13 @@ import org.atnos.eff.syntax.eff._
 import org.mockito.{ Matchers, Mockito }
 
 import example.shared.lib.test.AbstractSpecification
-
 import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier, UUIDIdGenerator }
-import example.shared.lib.eff.util.idGen.IdGenInterpretationTypes.IdGenStack
-import example.shared.lib.eff.util.idGen.IdGenTypes._idgen
-import example.shared.lib.eff.util.idGen.interpreter.{ IdGenInterpreter, IdGenInterpreterImpl }
+import example.shared.lib.eff.IdGenStack
+import example.shared.lib.eff.util.idGen.interpreter.{ IdGenInterpreterImpl }
+import example.shared.lib.eff._
 
 class IdGenEffectSpec extends AbstractSpecification {
 
-  import IdGenEffect._
   import IdGenEffectSpec._
   import Matchers._
   import Mockito._
@@ -54,7 +52,7 @@ object IdGenEffectSpec {
         override def generate(value: String): TestId =
           TestId(value)
       }
-      IdGenEffect.generate[TestId, R](gen)
+      IdGen.generate[TestId, R](gen)
     }
   }
 

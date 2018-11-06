@@ -1,5 +1,8 @@
 import com.typesafe.sbt.SbtGit.git
 
+import com.typesafe.sbt.SbtNativePackager.autoImport._
+import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport._
+import com.typesafe.sbt.packager.universal.UniversalPlugin.autoImport._
 import com.lucidchart.sbt.scalafmt.ScalafmtCorePlugin.autoImport._
 
 import sbt.Keys._
@@ -58,7 +61,7 @@ object Common {
         "Typesafe Snapshots" at "http://repo.typesafe.com/typesafe/snapshots/",
         "bintray/non" at "http://dl.bintray.com/non/maven"
       ),
-      addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.4"),
+      addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.8"),
       addCompilerPlugin("org.scalamacros" % "paradise"        % "2.1.0" cross CrossVersion.full),
       sources in doc in Compile := Seq.empty,
       sources in doc in update := Seq.empty,
@@ -66,6 +69,8 @@ object Common {
       scalafmtOnCompile := true
     )
     lazy val DebugTest = config("debug") extend Test
+    lazy val MysqlTest = config("mysql") extend Test
+    lazy val TestSeq = Seq(DebugTest, MysqlTest)
 
     // test共通設定
     lazy val commonTestSettings = Seq(
@@ -78,7 +83,8 @@ object Common {
       fork in DebugTest := true,
       javaOptions in DebugTest ++= Seq("-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=41230"),
       scalafmtTestOnCompile := true
-    ) ++ inConfig(DebugTest)(Defaults.testTasks)
+    ) ++ inConfig(DebugTest)(Defaults.testTasks) ++ inConfig(MysqlTest)(Defaults.testTasks)
+
 
     // module testの共通設定
     lazy val commonModuleTestSettings = Seq(
@@ -92,6 +98,9 @@ object Common {
         javaOptions in Test ++= Seq(
           s"-Dconfig.file=${sys.props.getOrElse("config.file", default = s"conf/partial/$pjName/$adapterName/test_h2.conf")}"
         ),
+        javaOptions in MysqlTest ++= Seq(
+          s"-Dconfig.file=${sys.props.getOrElse("config.file", default = s"conf/partial/$pjName/$adapterName/test_mysql.conf")}"
+        ),
         javaOptions in run ++= Seq(
           s"-Dconfig.file=${sys.props.getOrElse("config.file", default = s"conf/partial/$pjName/$adapterName/local_h2.conf")}"
         )
@@ -104,11 +113,10 @@ object Common {
     )
 
     lazy val buildSettings = Seq(
-//      // sbt-native-packager
-//      maintainer in Docker := "Tsubasa Matsukawa <w_ma2k8@me.com>",
-//      dockerBaseImage := "anapsix/alpine-java:8",
-//      dockerUpdateLatest := true,
-//      dockerBuildOptions in publishLocal ++= Seq("-t", "latest"),
+      // sbt-native-packager
+      maintainer in Docker := "Tsubasa Matsukawa <w_ma2k8@me.com>",
+      dockerBaseImage := "java:8-jdk-alpine",
+      dockerUpdateLatest := true,
       // aggregateしない
       aggregate in console := false,
       aggregate in run := false,
@@ -121,21 +129,6 @@ object Common {
     lazy val subPjSettings = Seq(
       sources in (Compile, doc) := Seq.empty,
       publishArtifact in (Compile, packageDoc) := false
-    )
-  }
-
-  object Dependencies {
-
-    val AIRFRAME_VERSION = "0.68"
-    lazy val diDeps = Seq(
-      "org.wvlet.airframe"           %% "airframe"            % AIRFRAME_VERSION,
-      "com.google.inject"            % "guice"                % "4.0",
-      "com.google.inject.extensions" % "guice-assistedinject" % "4.0"
-    )
-
-    lazy val testDeps = Seq(
-      "org.scalatest" %% "scalatest"  % "3.0.5"   % Test,
-      "org.mockito"   % "mockito-all" % "1.10.19" % Test
     )
   }
 
