@@ -1,11 +1,12 @@
 package example.config.di
 import com.google.inject.AbstractModule
-import example.ExampleController
+import example.{ExampleRouter, UserController}
 
 class ExampleApiExternalAdapterModule extends AbstractModule {
 
   def configure(): Unit = {
-    bind(classOf[ExampleController])
+    bind(classOf[ExampleRouter])
+    bind(classOf[UserController])
   }
 
 }
