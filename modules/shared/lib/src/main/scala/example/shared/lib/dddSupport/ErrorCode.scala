@@ -3,7 +3,7 @@ package example.shared.lib.dddSupport
 /**
   * エラーコード
   */
-sealed class ErrorCode(value: String)
+sealed class ErrorCode(val value: String)
 
 object ErrorCode {
   case object INVALID_REQUEST     extends ErrorCode("INVALID_REQUEST")

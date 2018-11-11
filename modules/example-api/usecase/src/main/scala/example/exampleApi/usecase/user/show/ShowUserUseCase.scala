@@ -11,14 +11,13 @@ import scala.concurrent.ExecutionContext
 
 abstract class ShowUserUseCase extends EffUseCase with EffPushPort[ShowUserUseCaseArgs, Error, ShowUserUseCaseResult] {
 
-  def execute[R: _trantask](
+  def execute[R: _trantask: _errorEither](
     arg: ShowUserUseCaseArgs
   )(implicit ec: ExecutionContext): Eff[R, ShowUserUseCaseResult]
-
 }
 
 case class ShowUserUseCaseArgs(
   userId: UserId
 ) extends UseCaseArgument
 
-case class ShowUserUseCaseResult(userOpt: Option[User]) extends UseCaseResult
+case class ShowUserUseCaseResult(user: User) extends UseCaseResult
