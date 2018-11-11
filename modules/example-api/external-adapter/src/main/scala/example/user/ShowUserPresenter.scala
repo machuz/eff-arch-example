@@ -1,6 +1,6 @@
 package example.user
 
-import akka.http.scaladsl.model.{  HttpResponse, ResponseEntity, StatusCodes }
+import akka.http.scaladsl.model.{ HttpEntity, HttpResponse, ResponseEntity, StatusCodes }
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.StandardRoute
 import example.akkaHttp.{ AbstractAkkaHttpPresenter, ErrorResponse }
@@ -15,19 +15,27 @@ class ShowUserPresenter extends AbstractAkkaHttpPresenter[\/[Error, ShowUserUseC
       case \/-(useCaseRes) =>
         val httpRes = HttpResponse(
           status = StatusCodes.OK,
-          entity = ResponseEntity(UserJsonModel.convertToJsonModel(useCaseRes.user).toJson)
+          entity = HttpEntity(
+            jsonPrint(
+              obj = UserJsonModel.convertToJsonModel(useCaseRes.user)
+            )
+          )
         )
         complete(httpRes)
       case -\/(e: Error.UseCaseError) if e.code == ErrorCode.RESOURCE_NOT_FOUND =>
         val httpRes = HttpResponse(
           status = StatusCodes.NotFound,
-          entity = ResponseEntity(ErrorResponse(e.code, e.getMessage).toJson)
+          entity = HttpEntity(
+            jsonPrint(ErrorResponse(e.code, e.getMessage))
+          )
         )
         complete(httpRes)
       case -\/(e) =>
         val httpRes = HttpResponse(
           status = StatusCodes.InternalServerError,
-          entity = ResponseEntity(ErrorResponse(ErrorCode.SERVER_ERROR, e.getMessage).toJson)
+          entity = HttpEntity(
+            jsonPrint(ErrorResponse(ErrorCode.SERVER_ERROR, e.getMessage))
+          )
         )
         complete(httpRes)
     }

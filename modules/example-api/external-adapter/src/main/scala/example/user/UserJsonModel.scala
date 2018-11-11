@@ -2,7 +2,7 @@ package example.user
 
 import example.akkaHttp.OutputJson
 import example.exampleApi.domain.model.user.User
-import io.circe.Json
+import io.circe.{ Encoder, Json }
 
 import java.time.ZonedDateTime
 
@@ -11,14 +11,12 @@ case class UserJsonModel(
   name: Option[String],
   createdAt: ZonedDateTime,
   updatedAt: ZonedDateTime
-) extends OutputJson { self =>
+)
 
-  import io.circe.syntax._
-  import io.circe.generic.auto
-  override def toJson: Json = self.asJson
-}
+object UserJsonModel extends OutputJson[UserJsonModel] {
+  import io.circe.generic.semiauto._
 
-object UserJsonModel {
+  override implicit val encoder: Encoder[UserJsonModel] = deriveEncoder
 
   def convertToJsonModel(domainModel: User): UserJsonModel = {
     UserJsonModel(
@@ -28,5 +26,4 @@ object UserJsonModel {
       updatedAt = domainModel.updatedAt
     )
   }
-
 }

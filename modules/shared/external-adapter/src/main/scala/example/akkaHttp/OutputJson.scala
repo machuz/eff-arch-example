@@ -1,7 +1,8 @@
 package example.akkaHttp
 
-import io.circe.Json
+import io.circe.{ Encoder, Json }
+import io.circe.generic.semiauto._
 
-trait OutputJson { self =>
-  def toJson: Json
+trait OutputJson[A] {
+  implicit val encoder: Encoder[A]
 }

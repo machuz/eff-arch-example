@@ -1,7 +1,6 @@
 package example.exampleApi.usecase.user.show
 
-import cats._, cats.data._, cats.implicits._
-import cats.instances.all._
+import cats.implicits._
 
 import org.atnos.eff.Eff
 
@@ -11,6 +10,7 @@ import example.shared.lib.dddSupport.ErrorCode
 
 import scala.concurrent.ExecutionContext
 import example.shared.lib.eff._
+import example.shared.lib.eff.atnosEff._
 import javax.inject.Inject
 
 class ShowUserUseCaseImpl @Inject()(
@@ -24,9 +24,9 @@ class ShowUserUseCaseImpl @Inject()(
     for {
       userOpt <- userRepo.resolveById[R](arg.userId)
       user <- {
-        fromEither(userOpt match {
+        fromError(userOpt match {
           case Some(user) => Either.right(user)
-          case None => Either.left(UseCaseError(ErrorCode.RESOURCE_NOT_FOUND))
+          case None       => Either.left(UseCaseError(ErrorCode.RESOURCE_NOT_FOUND))
         })
       }
     } yield ShowUserUseCaseResult(user)
