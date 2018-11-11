@@ -85,7 +85,8 @@ object SharedProject {
         "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVer % Test,
         "com.typesafe.akka" %% "akka-testkit"      % akkaVer % Test,
         "com.typesafe.akka" %% "akka-actor"        % akkaVer,
-        "com.typesafe.akka" %% "akka-slf4j"        % akkaVer
+        "com.typesafe.akka" %% "akka-slf4j"        % akkaVer,
+        "ch.megard"         %% "akka-http-cors"    % "0.3.1"
       )
 
       lazy val circeDeps = Seq(
