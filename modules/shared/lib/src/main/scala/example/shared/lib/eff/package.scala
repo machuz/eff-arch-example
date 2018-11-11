@@ -1,7 +1,7 @@
 package example.shared.lib
 
+import org.atnos.eff._
 import org.atnos.eff.addon.monix.TaskEffect
-import org.atnos.eff.{ <=, |=, Fx }
 
 import cats.data.Writer
 import example.shared.lib.dddSupport.Error
@@ -10,11 +10,12 @@ import example.shared.lib.eff.util.clock.java8.{ ClockM, ClockMEffect }
 import example.shared.lib.eff.util.idGen.{ IdGen, IdGenEffect }
 import example.shared.lib.log.LogMessage
 
-/**
-  * Note:
-  * InterpreterがlibいあるものはEffectをmix-inするが、secondaryAdapternにあるものはCreationだけmix-inする
-  */
-package object eff extends TransactionTaskCreation with TaskEffect with ClockMEffect with IdGenEffect {
+package object eff
+  extends TransactionTaskCreation
+  with ClockMEffect
+  with IdGenEffect
+  with atnosEff
+  with atnosEffCreation {
 
   type WriterLogMsg[A]  = Writer[LogMessage, A]
   type _writerLogMsg[R] = WriterLogMsg |= R
@@ -29,3 +30,36 @@ package object eff extends TransactionTaskCreation with TaskEffect with ClockMEf
   type ModelApplyStack = Fx.fx2[IdGen, ClockM]
 
 }
+
+trait atnosEff
+  extends ReaderEffect
+  with WriterEffect
+  with StateEffect
+  with EvalEffect
+  with OptionEffect
+  with ListEffect
+  with EitherEffect
+  with ValidateEffect
+  with ChooseEffect
+  with SafeEffect
+  with MemoEffect
+  with Batch
+  with EffInterpretation
+  with EffCreation
+  with EffImplicits
+  with TaskEffect
+
+trait atnosEffCreation
+  extends ReaderCreation
+  with WriterCreation
+  with StateCreation
+  with EvalCreation
+  with OptionCreation
+  with ListCreation
+  with EitherCreation
+  with ValidateCreation
+  with ChooseCreation
+  with FutureCreation
+  with MemoCreation
+  with EffCreation
+  with SafeCreation
