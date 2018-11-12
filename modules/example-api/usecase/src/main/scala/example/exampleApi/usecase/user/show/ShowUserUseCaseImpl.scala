@@ -18,8 +18,6 @@ class ShowUserUseCaseImpl @Inject()(
 ) extends ShowUserUseCase {
   override def execute[R: _trantask: _errorEither](
     arg: ShowUserUseCaseArgs
-  )(
-    implicit ec: ExecutionContext
   ): Eff[R, ShowUserUseCaseResult] = {
     for {
       userOpt <- userRepo.resolveById[R](arg.userId)

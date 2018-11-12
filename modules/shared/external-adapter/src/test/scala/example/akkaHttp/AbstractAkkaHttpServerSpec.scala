@@ -10,9 +10,10 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.client.RequestBuilding
 import akka.http.scaladsl.model.{ HttpRequest, StatusCodes }
-import akka.http.scaladsl.server.{ HttpApp, Route }
+import akka.http.scaladsl.server.{ HttpApp, RejectionHandler, Route }
 import akka.stream.ActorMaterializer
 import example.config.AkkaHttpServerConf
+import example.shared.adapter.secondary.json.circe.DefaultJsonPrinter
 import example.shared.lib.eff.util.idGen.IdGenEffectSpec
 import example.shared.lib.test.AbstractSpecification
 
@@ -34,7 +35,8 @@ class AbstractAkkaHttpServerSpec extends AbstractSpecification with RequestBuild
       materializerSettings = None,
       namePrefix = Option(actorSystemName)
     )
-    implicit val ec: ExecutionContext = actorSystem.dispatcher
+    implicit val ec: ExecutionContext              = actorSystem.dispatcher
+    implicit val rejectionHander: RejectionHandler = new DefaultRejectionHandlerProvider(new DefaultJsonPrinter).get()
 
     def withTestServer(testCode: TestServer ⇒ Any): Unit = {
       val mockConf = Mockito.mock(classOf[AkkaHttpServerConf])
@@ -84,7 +86,8 @@ class AbstractAkkaHttpServerSpec extends AbstractSpecification with RequestBuild
 class TestServer(override val akkaHttpServerConf: AkkaHttpServerConf)(
   implicit override val actorSystem: ActorSystem,
   implicit override val actorMaterializer: ActorMaterializer,
-  implicit override val ec: ExecutionContext
+  implicit override val ec: ExecutionContext,
+  implicit override val rejectionHander: RejectionHandler
 ) extends AbstractAkkaHttpServer {
 
   val shutdownPromise = Promise[Done]()

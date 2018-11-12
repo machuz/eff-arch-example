@@ -13,7 +13,7 @@ abstract class ShowUserUseCase extends EffUseCase with EffPushPort[ShowUserUseCa
 
   def execute[R: _trantask: _errorEither](
     arg: ShowUserUseCaseArgs
-  )(implicit ec: ExecutionContext): Eff[R, ShowUserUseCaseResult]
+  ): Eff[R, ShowUserUseCaseResult]
 }
 
 case class ShowUserUseCaseArgs(
