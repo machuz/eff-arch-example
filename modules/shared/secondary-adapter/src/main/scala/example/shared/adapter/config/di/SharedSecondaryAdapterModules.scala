@@ -7,6 +7,7 @@ trait SharedSecondaryAdapterModules {
     new AWSClientProviderModule(),
     new ExecutionContextModule(),
     new InterpreterModule(),
+    new JsonModule(),
     new SharedSecondaryAdapterConfModule()
   )
 

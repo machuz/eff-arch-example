@@ -1,43 +1,33 @@
 package example.user
 
-import akka.http.scaladsl.model.{ HttpEntity, HttpResponse, ResponseEntity, StatusCodes }
+import example.akkaHttp.{ DefaultPresenter, ErrorResponseConverter }
+import example.shared.adapter.secondary.json.circe.JsonPrinter
+import javax.inject.Inject
+//import akka.http.scaladsl.model.{ HttpEntity, HttpResponse, ResponseEntity, StatusCodes }
+import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.StandardRoute
-import example.akkaHttp.{ AbstractAkkaHttpPresenter, ErrorResponse }
+import example.akkaHttp.AbstractAkkaHttpPresenter
 import example.exampleApi.usecase.user.show.ShowUserUseCaseResult
-import example.shared.lib.dddSupport.{ Error, ErrorCode }
+import example.shared.lib.dddSupport.Error
 
-import scalaz.{ -\/, \/, \/- }
-
-class ShowUserPresenter extends AbstractAkkaHttpPresenter[\/[Error, ShowUserUseCaseResult]] {
-  override def response(arg: \/[Error, ShowUserUseCaseResult]): StandardRoute = {
+class ShowUserPresenter @Inject()(
+  jsonPrinter: JsonPrinter,
+  defaultPresenter: DefaultPresenter
+) extends AbstractAkkaHttpPresenter[Either[Error, ShowUserUseCaseResult]] {
+  override def response(arg: Either[Error, ShowUserUseCaseResult]): StandardRoute = {
     arg match {
-      case \/-(useCaseRes) =>
+      case Right(useCaseRes) =>
         val httpRes = HttpResponse(
           status = StatusCodes.OK,
           entity = HttpEntity(
-            jsonPrint(
+            jsonPrinter.print(
               obj = UserJsonModel.convertToJsonModel(useCaseRes.user)
             )
           )
         )
         complete(httpRes)
-      case -\/(e: Error.UseCaseError) if e.code == ErrorCode.RESOURCE_NOT_FOUND =>
-        val httpRes = HttpResponse(
-          status = StatusCodes.NotFound,
-          entity = HttpEntity(
-            jsonPrint(ErrorResponse(e.code, e.getMessage))
-          )
-        )
-        complete(httpRes)
-      case -\/(e) =>
-        val httpRes = HttpResponse(
-          status = StatusCodes.InternalServerError,
-          entity = HttpEntity(
-            jsonPrint(ErrorResponse(ErrorCode.SERVER_ERROR, e.getMessage))
-          )
-        )
-        complete(httpRes)
+      case x => defaultPresenter.response(x)
     }
   }
 }

@@ -6,13 +6,14 @@ package example.shared.lib.dddSupport
 sealed class ErrorCode(val value: String)
 
 object ErrorCode {
-  case object INVALID_REQUEST extends ErrorCode("INVALID_REQUEST")
+  case object AKKA_HTTP_REJECTION_HANDLE_ERROR extends ErrorCode("AKKA_HTTP_REJECTION_HANDLE_ERROR")
+  case object INVALID_REQUEST                  extends ErrorCode("INVALID_REQUEST")
 
   case object INVALID_PARAMETERS extends ErrorCode("INVALID_PARAMETERS")
 
   case object UNAUTHORIZED extends ErrorCode("UNAUTHORIZED")
 
-  case object ACCESS_FORBIDDEN extends ErrorCode("ACCESS_FORBIDDEN")
+  case object FORBIDDEN extends ErrorCode("FORBIDDEN")
 
   case object RESOURCE_NOT_FOUND extends ErrorCode("RESOURCE_NOT_FOUND")
 

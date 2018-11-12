@@ -1,7 +1,9 @@
 package example.shared.lib.dddSupport
 
-sealed trait Error                                 extends Throwable
-sealed class ErrorHasUnderlay(underlay: Throwable) extends Error
+sealed trait Error                                                         extends Throwable
+sealed class ErrorHasUnderlay(underlay: Throwable)                         extends Error
+sealed class ErrorHasCode(code: ErrorCode)                                 extends Error
+sealed class ErrorHasUnderlayAndCode(underlay: Throwable, code: ErrorCode) extends Error
 
 object ErrorHasUnderlay
 
@@ -23,30 +25,24 @@ object Error {
     code: ErrorCode = SERVER_ERROR
   ) extends ErrorHasUnderlay(underlying)
 
-  final case class DomainServiceError(code: ErrorCode) extends Error
-  final case class UseCaseError(code: ErrorCode)       extends Error
-  final case class RepositoryError(code: ErrorCode)    extends Error
+  final case class DomainServiceError(code: ErrorCode) extends ErrorHasCode(code)
+  final case class UseCaseError(code: ErrorCode)       extends ErrorHasCode(code)
+  final case class RepositoryError(code: ErrorCode)    extends ErrorHasCode(code)
 
   final case class RedisError(code: ErrorCode = REDIS_COMMAND_ERROR) extends Error
-
-  final case class InvalidRequestError(
-    msg: String,
-    req: String,
-    code: ErrorCode = INVALID_REQUEST
-  ) extends Error
 
   final case class ThirdPartyServiceError(
     underlying: Throwable,
     code: ErrorCode
-  ) extends ErrorHasUnderlay(underlying)
+  ) extends ErrorHasUnderlayAndCode(underlying, code)
 
   final case class KinesisError(
     underlying: Throwable,
     code: ErrorCode
-  ) extends ErrorHasUnderlay(underlying)
+  ) extends ErrorHasUnderlayAndCode(underlying, code)
 
   final case class KinesisFirehoseError(
     underlying: Throwable,
     code: ErrorCode
-  ) extends ErrorHasUnderlay(underlying)
+  ) extends ErrorHasUnderlayAndCode(underlying, code)
 }
