@@ -161,8 +161,7 @@ object SharedProject {
       val shttpVer = "1.1.4"
       lazy val httpDeps = Seq(
         "com.softwaremill.sttp" %% "core"                             % shttpVer,
-        "com.softwaremill.sttp" %% "async-http-client-backend-monix"  % shttpVer,
-        "com.softwaremill.sttp" %% "async-http-client-handler-scalaz" % "0.0.13"
+        "com.softwaremill.sttp" %% "async-http-client-backend-monix"  % shttpVer
       )
 
       lazy val excelDeps = Seq(
@@ -187,23 +186,20 @@ object SharedProject {
 
       val monixVer = "2.3.2"
       lazy val monixDeps = Seq(
-        "io.monix" %% "monix"           % monixVer,
-        "io.monix" %% "monix-scalaz-72" % monixVer // scalazは消す
+        "io.monix" %% "monix"      % monixVer,
+        "io.monix" %% "monix-cats" % monixVer
       )
 
       val effVer = "5.2.0"
       lazy val effDeps = Seq(
-        "org.atnos" %% "eff"        % effVer,
-        "org.atnos" %% "eff-scalaz" % effVer,
-        "org.atnos" %% "eff-monix"  % effVer
+        "org.atnos" %% "eff"             % effVer,
+        "org.atnos" %% "eff-monix"       % effVer,
+        "org.atnos" %% "eff-cats-effect" % effVer
       )
 
-      // scalazは消す
-      val scalazVer = "7.2.15"
       lazy val utilsDeps = Seq(
         "org.typelevel"          %% "cats-core"    % "1.4.0",
         "org.scala-lang"         % "scala-library" % Common.Settings.defaultScalaVersion,
-        "org.scalaz"             %% "scalaz-core"  % scalazVer,
         "com.codecommit"         %% "shims"        % "1.2.1",
         "com.github.scopt"       %% "scopt"        % "3.5.0",
         "com.eaio.uuid"          % "uuid"          % "3.2",
@@ -238,8 +234,9 @@ object SharedProject {
 
       lazy val testDeps = Seq(
         "org.scalatest"       %% "scalatest"                 % "3.0.5"   % Test,
+        "com.ironcorelabs"    %% "cats-scalatest"            % "2.3.1"   % Test,
         "org.mockito"         % "mockito-all"                % "1.10.19" % Test,
-        "org.scalaz"          %% "scalaz-scalacheck-binding" % scalazVer % Test,
+        "io.chrisdavenport"   %% "cats-scalacheck"           % "0.1.0"   % Test,
         "com.danielasfregola" %% "random-data-generator"     % "2.6"     % Test
       )
 
