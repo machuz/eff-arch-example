@@ -14,8 +14,6 @@ class CreateUserUseCaseImpl @Inject()(
 ) extends CreateUserUseCase {
   override def execute[R: _trantask: _idgen: _clockm](
     arg: CreateUserUseCaseArgs
-  )(
-    implicit ec: ExecutionContext
   ): Eff[R, CreateUserUseCaseResult] = {
     for {
       user <- User.applyEff[R](arg.name)

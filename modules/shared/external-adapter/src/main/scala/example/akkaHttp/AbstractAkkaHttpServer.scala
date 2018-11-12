@@ -1,20 +1,24 @@
 package example.akkaHttp
 
 import akka.Done
-import akka.actor.{ActorSystem, Terminated}
-import akka.http.scaladsl.server.{HttpApp, Route}
+import akka.actor.{ ActorSystem, Terminated }
+import akka.http.scaladsl.server.{ HttpApp, RejectionHandler, Route }
 import akka.stream.ActorMaterializer
 import example.config.AkkaHttpServerConf
+import javax.inject.Inject
 
 import scala.concurrent.duration._
-import scala.concurrent.{Await, ExecutionContext, Future}
-import scala.util.{Failure, Success, Try}
+import scala.concurrent.{ Await, ExecutionContext, Future }
+import scala.util.{ Failure, Success, Try }
 
-abstract class AbstractAkkaHttpServer extends HttpApp {
+abstract class AbstractAkkaHttpServer @Inject()(
+  )
+  extends HttpApp {
 
   implicit val actorSystem: ActorSystem
   implicit val actorMaterializer: ActorMaterializer
   implicit val ec: ExecutionContext
+  implicit val rejectionHander: RejectionHandler
 
   val akkaHttpServerConf: AkkaHttpServerConf
 

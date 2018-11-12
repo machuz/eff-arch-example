@@ -4,7 +4,7 @@ import com.google.inject.Inject
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{ ContentTypes, HttpEntity }
-import akka.http.scaladsl.server.Route
+import akka.http.scaladsl.server.{ RejectionHandler, Route }
 import akka.stream.ActorMaterializer
 import example.akkaHttp.AbstractAkkaHttpServer
 import example.config.AkkaHttpServerConf
@@ -24,7 +24,8 @@ class ExampleApiServer @Inject()(
 )(
   implicit override val actorSystem: ActorSystem,
   override val actorMaterializer: ActorMaterializer,
-  @Named("default-app-context") override val ec: ExecutionContext
+  @Named("default-app-context") override val ec: ExecutionContext,
+  override val rejectionHander: RejectionHandler
 ) extends AbstractAkkaHttpServer {
 
   override protected def routes: Route =

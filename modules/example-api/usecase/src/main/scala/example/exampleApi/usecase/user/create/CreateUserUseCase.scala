@@ -15,7 +15,7 @@ abstract class CreateUserUseCase
 
   def execute[R: _trantask: _idgen: _clockm](
     arg: CreateUserUseCaseArgs
-  )(implicit ec: ExecutionContext): Eff[R, CreateUserUseCaseResult]
+  ): Eff[R, CreateUserUseCaseResult]
 
 }
 

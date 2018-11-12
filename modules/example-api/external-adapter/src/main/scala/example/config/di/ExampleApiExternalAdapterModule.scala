@@ -1,6 +1,8 @@
 package example.config.di
 import com.google.inject.AbstractModule
-import example.{ExampleRouter, UserController}
+
+import example.ExampleRouter
+import example.user.UserController
 
 class ExampleApiExternalAdapterModule extends AbstractModule {
 

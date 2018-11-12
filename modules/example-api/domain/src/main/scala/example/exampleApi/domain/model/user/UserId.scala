@@ -10,6 +10,10 @@ case class UserId(value: String) extends Identifier[String]
 
 object UserId {
 
+  import io.circe._
+  import io.circe.syntax._
+  import io.circe.generic.auto._
+
   def generate[R: _idgen]: Eff[R, UserId] = {
     val gen = new IdGenerator[UserId] {
       override def generate(value: String): UserId = UserId(value)

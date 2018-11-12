@@ -9,7 +9,7 @@ import org.mockito.{ Matchers, Mockito }
 import example.shared.lib.test.AbstractSpecification
 import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier, UUIDIdGenerator }
 import example.shared.lib.eff.IdGenStack
-import example.shared.lib.eff.util.idGen.interpreter.{ IdGenInterpreterImpl }
+import example.shared.lib.eff.util.idGen.interpreter.IdGenInterpreterImpl
 import example.shared.lib.eff._
 
 class IdGenEffectSpec extends AbstractSpecification {

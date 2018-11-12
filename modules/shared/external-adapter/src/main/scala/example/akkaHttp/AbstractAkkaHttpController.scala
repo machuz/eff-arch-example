@@ -1,7 +1,8 @@
 package example.akkaHttp
+
 import akka.http.scaladsl.server.Route
 
-abstract class AbstractAkkaHttpRouter {
+abstract class AbstractAkkaHttpController {
   def routes: Route
 
 }
