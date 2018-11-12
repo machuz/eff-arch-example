@@ -24,7 +24,7 @@ class AbstractAkkaHttpRouterSpec extends WordSpecLike with Matchers with Scalate
 
 class TestRouter extends AbstractAkkaHttpRouter {
   // nameパラメータを受け付けテキストを返信する
-  override def routes: Route =  path("hello") {
+  override def routes: Route = path("hello") {
     parameter('name) { name =>
       complete(StatusCodes.OK -> s"Hello $name!!")
     }
