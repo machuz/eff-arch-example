@@ -9,15 +9,15 @@ import example.shared.lib.eff.db.transactionTask.TransactionTaskCreation
 import example.shared.lib.eff.util.clock.java8.{ ClockM, ClockMEffect }
 import example.shared.lib.eff.util.idGen.{ IdGen, IdGenEffect }
 import example.shared.lib.log.LogMessage
+import monix.eval.Task
+
 
 package object eff
   extends ClockMEffect
   with IdGenEffect
   with TransactionTaskCreation
-  with example.shared.lib.eff.either.ErrorEffect
-//  with atnosEff
-//  with atnosEffCreation
-  {
+  with example.shared.lib.eff.either.ErrorEffect {
+
   type _errorEitherMember[R] = ErrorEither <= R
   type _errorEither[R]       = ErrorEither |= R
   type _nothing[R]           = Nothing |= R
