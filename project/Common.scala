@@ -56,7 +56,6 @@ object Common {
         Resolver.bintrayRepo("findify", "maven"),
         Resolver.sonatypeRepo("releases"),
         Resolver.sonatypeRepo("snapshots"),
-        "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases",
         "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
         "Typesafe Snapshots" at "http://repo.typesafe.com/typesafe/snapshots/",
         "bintray/non" at "http://dl.bintray.com/non/maven"

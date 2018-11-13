@@ -6,17 +6,14 @@ import io.circe._
 import io.circe.syntax._
 import shapeless.{ ::, Generic, HNil, Lazy }
 
-import scalaz.\/
-
 trait CacheableId[A] {
   def deriveIdentifierEncoder(implicit encode: Lazy[IdentifierEncoder[A]]): Encoder[A] = encode.value
   def deriveIdentifierDecoder(implicit decode: Lazy[IdentifierDecoder[A]]): Decoder[A] = decode.value
   implicit val eq: Eq[A]                                                               = Eq.fromUniversalEquals
   implicit def encoder: Encoder[A]
   implicit def decoder: Decoder[A]
-  def encode(v: A): String            = v.asJson.noSpaces
-  def decode(v: String): \/[Error, A] = \/.fromEither(io.circe.parser.decode[A](v))
-
+  def encode(v: A): String                = v.asJson.noSpaces
+  def decode(v: String): Either[Error, A] = io.circe.parser.decode[A](v)
 }
 
 abstract class IdentifierDecoder[A] extends Decoder[A]

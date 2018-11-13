@@ -1,9 +1,10 @@
 package example.shared.lib.pimp
 
-import org.joda.time.format.{ DateTimeFormat, DateTimeFormatter, ISODateTimeFormat }
+import cats.implicits._
+
+import org.joda.time.format.{ DateTimeFormat, DateTimeFormatter }
 import org.joda.time.{ DateTime, LocalDate }
 
-import scalaz.Scalaz.{ none, ToOptionIdOps }
 import scala.language.implicitConversions
 import scala.util.matching.Regex
 

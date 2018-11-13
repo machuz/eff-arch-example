@@ -16,8 +16,6 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, Awaitable, Future }
 import scala.util.Random
 
-import scalaz.Monad
-
 import example.shared.lib.dddSupport.domain.{ EsRandom, Identifier, UUIDIdGenerator }
 
 /**
