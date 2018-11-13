@@ -1,16 +1,13 @@
 package example.shared.lib.test
 
 import org.joda.time.LocalDate.Property
-import org.joda.time.{ DateTime, DateTimeFieldType, LocalDate }
+import org.joda.time.DateTimeFieldType
 import org.joda.time.{ DateTime, LocalDate }
 
 import shapeless._
 
 import scala.language.higherKinds
-
-import scalaz.State
-
-import ConstantTestObject.{ state, ConstTestObj, UnitState }
+import cats.data.State
 
 trait TestObject[S, A] {
   def generate: State[S, A]
@@ -35,7 +32,7 @@ object ConstantTestObject extends BaseTestObject[Unit] {
   private def state[A](a: A): UnitState[A] =
     State(_ => ((), a))
 
-  def apply[A](implicit rnd: ConstTestObj[A]): A = rnd.generate(())._2
+  def apply[A](implicit rnd: ConstTestObj[A]): A = rnd.generate.runA(()).value
 
   implicit val testString: ConstTestObj[String] = new ConstTestObj[String] {
     def generate: UnitState[String] = state("string")
@@ -71,20 +68,20 @@ object ConstantTestObject extends BaseTestObject[Unit] {
 
   implicit def testOption[A: ConstTestObj]: ConstTestObj[Option[A]] = new ConstTestObj[Option[A]] {
     def generate: UnitState[Option[A]] = {
-      state(Some(implicitly[ConstTestObj[A]].generate(())._2))
+      state(Some(implicitly[ConstTestObj[A]].generate.runA(()).value))
     }
   }
 
   implicit def testSeq[A: ConstTestObj]: ConstTestObj[Seq[A]] = new ConstTestObj[Seq[A]] {
     override def generate: UnitState[Seq[A]] =
       state((0 until 3).map { _ =>
-        implicitly[ConstTestObj[A]].generate(())._2
+        implicitly[ConstTestObj[A]].generate.runA(()).value
       })
   }
 
   implicit def testSet[A: ConstTestObj]: ConstTestObj[Set[A]] = new ConstTestObj[Set[A]] {
     override def generate: UnitState[Set[A]] =
-      state(Set(implicitly[ConstTestObj[A]].generate(())._2))
+      state(Set(implicitly[ConstTestObj[A]].generate.runA(()).value))
   }
 
   implicit val testHNil: TestHList[HNil] = new TestHList[HNil] {

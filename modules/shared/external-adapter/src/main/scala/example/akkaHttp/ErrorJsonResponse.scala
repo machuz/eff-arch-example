@@ -1,6 +1,5 @@
 package example.akkaHttp
 
-import akka.http.scaladsl.model.{ HttpHeader, HttpResponse, StatusCode }
 import example.shared.lib.dddSupport.ErrorCode
 import io.circe.generic.semiauto.deriveEncoder
 import io.circe.Encoder
