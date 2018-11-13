@@ -165,7 +165,6 @@ object SharedProject {
       )
 
       lazy val excelDeps = Seq(
-        "info.folone" %% "poi-scala" % "0.18"
       )
 
       lazy val redisDeps = Seq(
@@ -200,7 +199,6 @@ object SharedProject {
       lazy val utilsDeps = Seq(
         "org.typelevel"          %% "cats-core"    % "1.4.0",
         "org.scala-lang"         % "scala-library" % Common.Settings.defaultScalaVersion,
-        "com.codecommit"         %% "shims"        % "1.2.1",
         "com.github.scopt"       %% "scopt"        % "3.5.0",
         "com.eaio.uuid"          % "uuid"          % "3.2",
         "com.github.nscala-time" %% "nscala-time"  % "2.14.0",
