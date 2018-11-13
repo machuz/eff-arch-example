@@ -16,7 +16,7 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
   private val u = UserDataModel.syntax("u")
 
   override def resolveById[R: _trantask](id: UserId): Eff[R, Option[User]] = {
-    val res = ask.map { implicit session =>
+    val res = sessionAsk.map { implicit session =>
       withSQL {
         select
           .from(UserDataModel as u)
@@ -31,7 +31,7 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
   }
 
   override def store[R: _trantask](entity: User): Eff[R, User] = {
-    val res = ask.map { implicit session =>
+    val res = sessionAsk.map { implicit session =>
       withSQL {
         insert
           .into(UserDataModel)
@@ -51,7 +51,7 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
   }
 
   override def remove[R: _trantask](id: UserId): Eff[R, Unit] = {
-    val res = ask
+    val res = sessionAsk
       .map { implicit session =>
         withSQL {
           delete

@@ -1,7 +1,6 @@
 package example.shared.lib.transactionTask
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
+import monix.eval.Task
 
 /**
   * 『PofEAA』の「Unit of Work」パターンの実装
@@ -23,7 +22,7 @@ trait TransactionTask[-Resource, +A] { lhs =>
     * @param ec ExecutionContext
     * @return トランザクションの内部で実行される個々の処理で得られる値
     */
-  def execute(resource: Resource)(implicit ec: ExecutionContext): Future[A]
+  def execute(resource: Resource): Task[A]
 
   /**
     * TransactionTaskモナドを合成する
@@ -38,7 +37,7 @@ trait TransactionTask[-Resource, +A] { lhs =>
     f: A => TransactionTask[ExtendedResource, B]
   ): TransactionTask[ExtendedResource, B] =
     new TransactionTask[ExtendedResource, B] {
-      def execute(resource: ExtendedResource)(implicit ec: ExecutionContext): Future[B] =
+      def execute(resource: ExtendedResource): Task[B] =
         lhs.execute(resource).map(f).flatMap(_.execute(resource))
     }
 
@@ -59,7 +58,7 @@ trait TransactionTask[-Resource, +A] { lhs =>
     * @tparam ExtendedResource トランザクションオブジェクトの型
     * @return 個々のTransactionTaskの処理の結果得られる値
     */
-  def run[ExtendedResource <: Resource]()(implicit runner: TransactionTaskRunner[ExtendedResource]): Future[A] =
+  def run[ExtendedResource <: Resource]()(implicit runner: TransactionTaskRunner[ExtendedResource]): Task[A] =
     runner.run(this)
 }
 
@@ -75,8 +74,7 @@ object TransactionTask {
     */
   def apply[Resource, A](a: => A): TransactionTask[Resource, A] =
     new TransactionTask[Resource, A] {
-      def execute(resource: Resource)(implicit executor: ExecutionContext): Future[A] =
-        Future(a)
+      def execute(resource: Resource): Task[A] = Task.now(a)
     }
 }
 
@@ -95,5 +93,5 @@ trait TransactionTaskRunner[Resource] {
     * @tparam A TransactionTask実行すると得られる値の型
     * @return TransactionTask実行して得られた値
     */
-  def run[A](task: TransactionTask[Resource, A]): Future[A]
+  def run[A](task: TransactionTask[Resource, A]): Task[A]
 }

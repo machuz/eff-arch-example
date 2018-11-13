@@ -10,29 +10,29 @@ import example.shared.lib.transactionTask.{
   TransactionTask,
   TransactionTaskRunner
 }
+import monix.eval.{ Callback, Task }
 
 package object scalikejdbc {
 
-  def ask: TransactionTask[Transaction, DBSession] =
+  def sessionAsk: TransactionTask[Transaction, DBSession] =
     new TransactionTask[Transaction, DBSession] {
-      def execute(transaction: Transaction)(implicit ec: ExecutionContext): Future[DBSession] =
-        Future.successful(transaction.asInstanceOf[ScalikejdbcTransaction].session)
+      def execute(transaction: Transaction): Task[DBSession] =
+        Task.now(transaction.asInstanceOf[ScalikejdbcTransaction].session)
     }
 
-  implicit def readRunner[R >: ReadTransaction](implicit ec: ExecutionContext): TransactionTaskRunner[R] =
+  implicit def readRunner[R >: ReadTransaction]: TransactionTaskRunner[R] =
     new TransactionTaskRunner[R] {
-      def run[A](task: TransactionTask[R, A]): Future[A] = {
-        val session = DB.readOnlySession()
-        val future  = task.execute(new ScalikejdbcReadTransaction(session))
-        future.onComplete(_ => session.close())
-        future
+      def run[A](task: TransactionTask[R, A]): Task[A] = {
+        val session   = DB.readOnlySession()
+        val monixTask = task.execute(new ScalikejdbcReadTransaction(session))
+        monixTask
       }
     }
 
-  implicit def readWriteRunner[R >: ReadWriteTransaction](implicit ec: ExecutionContext): TransactionTaskRunner[R] =
+  implicit def readWriteRunner[R >: ReadWriteTransaction]: TransactionTaskRunner[R] =
     new TransactionTaskRunner[R] {
-      def run[A](task: TransactionTask[R, A]): Future[A] = {
-        DB.futureLocalTx(session => task.execute(new ScalikejdbcReadWriteTransaction(session)))
+      def run[A](task: TransactionTask[R, A]): Task[A] = {
+        DB.localTx(session => task.execute(new ScalikejdbcReadWriteTransaction(session)))
       }
     }
 }
