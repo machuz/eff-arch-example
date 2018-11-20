@@ -138,6 +138,7 @@ object SharedProject {
         "com.h2database"  % "h2"                   % "1.4.197" % Test,
         "mysql"           % "mysql-connector-java" % "8.0.12",
         "org.scalikejdbc" %% "scalikejdbc"         % "3.3.1",
+        "org.scalikejdbc" %% "scalikejdbc-config"  % "3.3.1",
         "com.zaxxer"      % "HikariCP"             % "3.2.0",
         "org.flywaydb"    % "flyway-core"          % "5.0.7",
       )
@@ -160,12 +161,12 @@ object SharedProject {
 
       val shttpVer = "1.1.4"
       lazy val httpDeps = Seq(
-        "com.softwaremill.sttp" %% "core"                             % shttpVer,
-        "com.softwaremill.sttp" %% "async-http-client-backend-monix"  % shttpVer
+        "com.softwaremill.sttp" %% "core"                            % shttpVer,
+        "com.softwaremill.sttp" %% "async-http-client-backend-monix" % shttpVer
       )
 
       lazy val excelDeps = Seq(
-      )
+        )
 
       lazy val redisDeps = Seq(
         "com.github.etaty" %% "rediscala" % "1.8.0"
@@ -231,11 +232,11 @@ object SharedProject {
       )
 
       lazy val testDeps = Seq(
-        "org.scalatest"       %% "scalatest"                 % "3.0.5"   % Test,
-        "com.ironcorelabs"    %% "cats-scalatest"            % "2.3.1"   % Test,
-        "org.mockito"         % "mockito-all"                % "1.10.19" % Test,
-        "io.chrisdavenport"   %% "cats-scalacheck"           % "0.1.0"   % Test,
-        "com.danielasfregola" %% "random-data-generator"     % "2.6"     % Test
+        "org.scalatest"       %% "scalatest"             % "3.0.5"   % Test,
+        "com.ironcorelabs"    %% "cats-scalatest"        % "2.3.1"   % Test,
+        "org.mockito"         % "mockito-all"            % "1.10.19" % Test,
+        "io.chrisdavenport"   %% "cats-scalacheck"       % "0.1.0"   % Test,
+        "com.danielasfregola" %% "random-data-generator" % "2.6"     % Test
       )
 
     }
