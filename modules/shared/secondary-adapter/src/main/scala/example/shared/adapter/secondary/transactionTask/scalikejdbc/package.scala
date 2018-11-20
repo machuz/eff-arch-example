@@ -12,6 +12,8 @@ import example.shared.lib.transactionTask.{
 }
 import monix.eval.{ Callback, Task }
 
+import scala.reflect.ClassTag
+
 package object scalikejdbc {
 
   def sessionAsk: TransactionTask[Transaction, DBSession] =
@@ -20,7 +22,22 @@ package object scalikejdbc {
         Task.now(transaction.asInstanceOf[ScalikejdbcTransaction].session)
     }
 
-  implicit def readRunner[R >: ReadTransaction]: TransactionTaskRunner[R] =
+  def isType[R <: Transaction: ClassTag](a: Transaction) = {
+    a match {
+      case a: Transaction =>
+        println("tran")
+        true
+      case a: ReadTransaction =>
+        println("readTran")
+        true
+      case a: ReadWriteTransaction =>
+        println("readWriteTran")
+        true
+      case _ => false
+    }
+  }
+
+  implicit def readRunner[R >: ReadTransaction: ClassTag]: TransactionTaskRunner[R] =
     new TransactionTaskRunner[R] {
       def run[A](task: TransactionTask[R, A]): Task[A] = {
         val session   = DB.readOnlySession()
@@ -29,7 +46,7 @@ package object scalikejdbc {
       }
     }
 
-  implicit def readWriteRunner[R >: ReadWriteTransaction]: TransactionTaskRunner[R] =
+  implicit def readWriteRunner[R >: ReadWriteTransaction: ClassTag]: TransactionTaskRunner[R] =
     new TransactionTaskRunner[R] {
       def run[A](task: TransactionTask[R, A]): Task[A] = {
         DB.localTx(session => task.execute(new ScalikejdbcReadWriteTransaction(session)))
