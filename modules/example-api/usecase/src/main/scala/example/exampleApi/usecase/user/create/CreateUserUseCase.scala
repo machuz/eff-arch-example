@@ -6,6 +6,7 @@ import example.exampleApi.domain.model.user.User
 import example.shared.lib.dddSupport.usecase.{ EffPushPort, EffUseCase, UseCaseArgument, UseCaseResult }
 import example.shared.lib.dddSupport.Error
 import example.shared.lib.eff._
+import example.shared.lib.eff.atnosEff._
 
 import scala.concurrent.ExecutionContext
 
@@ -13,7 +14,7 @@ abstract class CreateUserUseCase
   extends EffUseCase
   with EffPushPort[CreateUserUseCaseArgs, Error, CreateUserUseCaseResult] {
 
-  def execute[R: _trantask: _idgen: _clockm](
+  def execute[R: _task: _trantask2: _readerDbSession: _idgen: _clockm](
     arg: CreateUserUseCaseArgs
   ): Eff[R, CreateUserUseCaseResult]
 

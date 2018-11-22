@@ -1,6 +1,13 @@
 package example.shared.lib.transactionTask
 
+import org.atnos.eff.Member
+
+import example.shared.lib.eff._
 import monix.eval.Task
+
+trait TransactionTask2[+A] {
+//  def execute(transaction: Transaction): Task[A]
+}
 
 /**
   * 『PofEAA』の「Unit of Work」パターンの実装
@@ -12,7 +19,20 @@ import monix.eval.Task
   * @tparam Resource トランザクションオブジェクトの型
   * @tparam A トランザクションを実行して得られる値の型
   */
+trait ReadTransactionTask[-Resource, +A] extends TransactionTask[Resource, A]
+trait ReadWriteTransactionTask[-Resource, +A] extends ReadTransactionTask[Resource, A]
+
 trait TransactionTask[-Resource, +A] { lhs =>
+
+  import scala.reflect.runtime.universe._
+
+//  def paramInfo2[ExtendedResource <: Resource](x: ExtendedResource) = {
+//    val targs = typeOf[ExtendedResource] match {
+//      case TypeRef(_, _, args) => args
+//    }
+//    println(s"type of $x has type arguments $targs")
+//    targs
+//  }
 
   /**
     * トランザクションの内部で実行される個々の処理の実装
@@ -58,7 +78,9 @@ trait TransactionTask[-Resource, +A] { lhs =>
     * @tparam ExtendedResource トランザクションオブジェクトの型
     * @return 個々のTransactionTaskの処理の結果得られる値
     */
-  def run[ExtendedResource <: Resource]()(implicit runner: TransactionTaskRunner[ExtendedResource]): Task[A] =
+  def run[ExtendedResource <: Resource]()(
+    implicit runner: TransactionTaskRunner[ExtendedResource]
+  ): Task[A] =
     runner.run(this)
 }
 

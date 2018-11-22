@@ -16,7 +16,7 @@ import javax.inject.Inject
 class ShowUserUseCaseImpl @Inject()(
   userRepo: UserRepository
 ) extends ShowUserUseCase {
-  override def execute[R: _trantask: _errorEither](
+  override def execute[R: _task: _trantask2: _readerDbSession: _errorEither](
     arg: ShowUserUseCaseArgs
   ): Eff[R, ShowUserUseCaseResult] = {
     for {

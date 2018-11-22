@@ -11,7 +11,6 @@ import example.shared.lib.eff.util.idGen.{ IdGen, IdGenEffect }
 import example.shared.lib.log.LogMessage
 import monix.eval.Task
 
-
 package object eff
   extends ClockMEffect
   with IdGenEffect
