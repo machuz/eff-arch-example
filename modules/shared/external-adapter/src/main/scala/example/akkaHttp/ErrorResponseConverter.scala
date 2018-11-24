@@ -43,10 +43,14 @@ class FormErrorResponseConverter @Inject()(
                                         jsonPrinter: JsonPrinter
                                       ) {
 
-  def convertToErrorResponse(formValidationError: FormValidationError): HttpEntity.Strict = {
-    HttpEntity(
-      jsonPrinter.print(FormErrorResponse(formValidationError))
+  def convertToErrorResponse(statusCode: StatusCode, formValidationError: FormValidationError): StandardRoute = {
+    val httpRes = HttpResponse(
+      status = statusCode,
+      entity = HttpEntity(
+        jsonPrinter.print(FormErrorResponse(formValidationError))
+      )
     )
+    complete(httpRes)
   }
 
 

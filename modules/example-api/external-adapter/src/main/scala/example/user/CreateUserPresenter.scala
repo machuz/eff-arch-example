@@ -13,8 +13,7 @@ import example.shared.lib.dddSupport.Error
 
 class CreateUserPresenter @Inject()(
   jsonPrinter: JsonPrinter,
-  defaultPresenter: DefaultPresenter,
-  formErrorResponseConverter: FormErrorResponseConverter,
+  defaultPresenter: DefaultPresenter
 ) extends AbstractAkkaHttpPresenter[Either[Error, CreateUserUseCaseResult]] {
   override def response(arg: Either[Error, CreateUserUseCaseResult]): StandardRoute = {
     arg match {
@@ -28,12 +27,7 @@ class CreateUserPresenter @Inject()(
           )
         )
         complete(httpRes)
-      case Left(e) =>
-        val httpRes = HttpResponse(
-          status = StatusCodes.BadRequest,
-          entity = formErrorResponseConverter.convertToErrorResponse(e)
-        )
-        complete(httpRes)
+      case x => defaultPresenter.response(x)
     }
   }
 }
