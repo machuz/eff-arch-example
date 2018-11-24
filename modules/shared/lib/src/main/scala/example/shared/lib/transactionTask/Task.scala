@@ -2,6 +2,7 @@ package example.shared.lib.transactionTask
 
 import org.atnos.eff.Member
 
+import cats.Monad
 import example.shared.lib.eff._
 import monix.eval.Task
 
@@ -19,18 +20,18 @@ trait TransactionTask2[+A] {
   * @tparam Resource トランザクションオブジェクトの型
   * @tparam A トランザクションを実行して得られる値の型
   */
-trait ReadTransactionTask[-Resource, +A] extends TransactionTask[Resource, A]
-trait ReadWriteTransactionTask[-Resource, +A] extends ReadTransactionTask[Resource, A]
+//trait ReadTransactionTask[-Resource, +A]      extends TransactionTask[Resource, A]
+//trait ReadWriteTransactionTask[-Resource, +A] extends ReadTransactionTask[Resource, A]
 
 trait TransactionTask[-Resource, +A] { lhs =>
 
   import scala.reflect.runtime.universe._
 
-//  def paramInfo2[ExtendedResource <: Resource](x: ExtendedResource) = {
-//    val targs = typeOf[ExtendedResource] match {
+//  def paramInfo[ExtendedResource <: Resource] = {
+//    val targs = typeOf[Resource] match {
 //      case TypeRef(_, _, args) => args
 //    }
-//    println(s"type of $x has type arguments $targs")
+//    println(s"type of $lhs has type arguments $targs")
 //    targs
 //  }
 

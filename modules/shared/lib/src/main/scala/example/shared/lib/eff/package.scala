@@ -9,7 +9,6 @@ import example.shared.lib.eff.db.transactionTask.TransactionTaskCreation
 import example.shared.lib.eff.util.clock.java8.{ ClockM, ClockMEffect }
 import example.shared.lib.eff.util.idGen.{ IdGen, IdGenEffect }
 import example.shared.lib.log.LogMessage
-import monix.eval.Task
 
 package object eff
   extends ClockMEffect
