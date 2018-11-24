@@ -24,6 +24,8 @@ class DefaultPresenter @Inject()(
         errorResponseConverter.convertToErrorResponse(StatusCodes.NotFound, e.code, e)
       case Left(e: Error.UseCaseError) if e.code == ErrorCode.SERVER_ERROR =>
         errorResponseConverter.convertToErrorResponse(StatusCodes.InternalServerError, e.code, e)
+      case Left(e: Error.FormValidationError) if e.code == ErrorCode.INVALID_FORM_VALUE_ERROR =>
+        errorResponseConverter.convertToErrorResponse(StatusCodes.UnprocessableEntity, e.code, e)
       case Left(e) =>
         errorResponseConverter.convertToErrorResponse(StatusCodes.InternalServerError, ErrorCode.SERVER_ERROR, e)
     }

@@ -1,12 +1,8 @@
 package example.user.dto.show
 
-import io.circe
-import io.circe.generic.auto._
-import io.circe.parser
+import example.Request
 
-case class ShowUserRequest(userId: String)
+case class ShowUserRequest(userId: String, name: Name, age: Int) extends Request
+case class Name(firstName: String, lastName: String)
 
-object ShowUserRequest {
-  def fromJson(jsonStr: String): String => Either[circe.Error, ShowUserResponse] =
-    parser.decode[ShowUserResponse]
-}
+
