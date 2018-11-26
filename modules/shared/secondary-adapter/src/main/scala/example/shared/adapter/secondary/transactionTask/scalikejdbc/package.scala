@@ -11,7 +11,6 @@ import example.shared.lib.transactionTask.{
   ReadWriteTransaction,
   Transaction,
   TransactionTask,
-  TransactionTask2,
   TransactionTaskRunner
 }
 import monix.eval.Task
@@ -29,28 +28,28 @@ package object scalikejdbc {
 //        Task.now(transaction.asInstanceOf[ScalikejdbcReadTransaction].session)
 //    }
 
-  def sessionAsk: TransactionTask[Transaction, DBSession] =
-    new TransactionTask[Transaction, DBSession] {
-      def execute(transaction: Transaction): Task[DBSession] =
-        Task.now(transaction.asInstanceOf[ScalikejdbcTransaction].session)
-    }
-
-  implicit def readRunner[R >: ReadTransaction]: TransactionTaskRunner[R] =
-    new TransactionTaskRunner[R] {
-      def run[A](task: TransactionTask[R, A]): Task[A] = {
-        val session = DB.readOnlySession()
-        println("read")
-        val s         = new ScalikejdbcReadTransaction(session)
-        val monixTask = task.execute(s)
-        monixTask
-      }
-    }
-
-  implicit def readWriteRunner[R >: ReadWriteTransaction]: TransactionTaskRunner[R] =
-    new TransactionTaskRunner[R] {
-      def run[A](task: TransactionTask[R, A]): Task[A] = {
-        println("write")
-        DB.localTx(session => task.execute(new ScalikejdbcReadWriteTransaction(session)))
-      }
-    }
+//  def sessionAsk: TransactionTask[Transaction, DBSession] =
+//    new TransactionTask[Transaction, DBSession] {
+//      def execute(transaction: Transaction): Task[DBSession] =
+//        Task.now(transaction.asInstanceOf[ScalikejdbcTransaction].session)
+//    }
+//
+//  implicit def readRunner[R >: ReadTransaction]: TransactionTaskRunner[R] =
+//    new TransactionTaskRunner[R] {
+//      def run[A](task: TransactionTask[R, A]): Task[A] = {
+//        val session = DB.readOnlySession()
+//        println("read")
+//        val s         = new ScalikejdbcReadTransaction(session)
+//        val monixTask = task.execute(s)
+//        monixTask
+//      }
+//    }
+//
+//  implicit def readWriteRunner[R >: ReadWriteTransaction]: TransactionTaskRunner[R] =
+//    new TransactionTaskRunner[R] {
+//      def run[A](task: TransactionTask[R, A]): Task[A] = {
+//        println("write")
+//        DB.localTx(session => task.execute(new ScalikejdbcReadWriteTransaction(session)))
+//      }
+//    }
 }

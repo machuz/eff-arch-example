@@ -5,7 +5,7 @@ import org.atnos.eff.addon.monix.TaskEffect
 
 import cats.data.Writer
 import example.shared.lib.dddSupport.Error
-import example.shared.lib.eff.db.transactionTask.TransactionTaskCreation
+import example.shared.lib.eff.db.transactionTask.{ TransactionTaskTypes }
 import example.shared.lib.eff.util.clock.java8.{ ClockM, ClockMEffect }
 import example.shared.lib.eff.util.idGen.{ IdGen, IdGenEffect }
 import example.shared.lib.log.LogMessage
@@ -13,7 +13,7 @@ import example.shared.lib.log.LogMessage
 package object eff
   extends ClockMEffect
   with IdGenEffect
-  with TransactionTaskCreation
+  with TransactionTaskTypes
   with example.shared.lib.eff.either.ErrorEffect {
 
   type _errorEitherMember[R] = ErrorEither <= R

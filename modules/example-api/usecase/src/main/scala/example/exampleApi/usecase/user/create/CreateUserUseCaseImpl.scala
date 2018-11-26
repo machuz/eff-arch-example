@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext
 class CreateUserUseCaseImpl @Inject()(
   userRepo: UserRepository
 ) extends CreateUserUseCase {
-  override def execute[R: _task: _trantask: _idgen: _clockm](
+  override def execute[R: _task: _trantask: _readerDbSession: _idgen: _clockm](
     arg: CreateUserUseCaseArgs
   ): Eff[R, CreateUserUseCaseResult] = {
     for {

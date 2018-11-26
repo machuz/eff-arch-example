@@ -6,10 +6,6 @@ import cats.Monad
 import example.shared.lib.eff._
 import monix.eval.Task
 
-trait TransactionTask2[+A] {
-//  def execute(transaction: Transaction): Task[A]
-}
-
 /**
   * 『PofEAA』の「Unit of Work」パターンの実装
   *
@@ -23,67 +19,7 @@ trait TransactionTask2[+A] {
 //trait ReadTransactionTask[-Resource, +A]      extends TransactionTask[Resource, A]
 //trait ReadWriteTransactionTask[-Resource, +A] extends ReadTransactionTask[Resource, A]
 
-trait TransactionTask[-Resource, +A] { lhs =>
-
-  import scala.reflect.runtime.universe._
-
-//  def paramInfo[ExtendedResource <: Resource] = {
-//    val targs = typeOf[Resource] match {
-//      case TypeRef(_, _, args) => args
-//    }
-//    println(s"type of $lhs has type arguments $targs")
-//    targs
-//  }
-
-  /**
-    * トランザクションの内部で実行される個々の処理の実装
-    * このメソッドを実装することでTransactionTaskが作られる
-    *
-    * @param resource トランザクションオブジェクト
-    * @param ec ExecutionContext
-    * @return トランザクションの内部で実行される個々の処理で得られる値
-    */
-  def execute(resource: Resource): Task[A]
-
-  /**
-    * TransactionTaskモナドを合成する
-    * その際、変位指定によりResourceの型は両方のTransactionTaskのResourceの共通のサブクラスの型になる
-    *
-    * @param f モナド関数
-    * @tparam ExtendedResource トランザクションオブジェクトの型
-    * @tparam B 合成されたTransactionTaskを実行すると得られる値の型
-    * @return 合成されたTransactionTask
-    */
-  def flatMap[ExtendedResource <: Resource, B](
-    f: A => TransactionTask[ExtendedResource, B]
-  ): TransactionTask[ExtendedResource, B] =
-    new TransactionTask[ExtendedResource, B] {
-      def execute(resource: ExtendedResource): Task[B] =
-        lhs.execute(resource).map(f).flatMap(_.execute(resource))
-    }
-
-  /**
-    * 関数をTransactionTaskの結果に適用する
-    *
-    * @param f 適用したい関数
-    * @tparam B 関数を適用して得られた値の型
-    * @return 関数が適用されたTransactionTask
-    */
-  def map[B](f: A => B): TransactionTask[Resource, B] = flatMap(a => TransactionTask(f(a)))
-
-  /**
-    * TransactionTaskRunnerを使ってTransactionTaskを実行する
-    * implicitによりResourceに合ったTransactionTaskRunnerが選ばれる
-    *
-    * @param runner TransactionTaskを実行するためのTransactionTaskRunner
-    * @tparam ExtendedResource トランザクションオブジェクトの型
-    * @return 個々のTransactionTaskの処理の結果得られる値
-    */
-  def run[ExtendedResource <: Resource]()(
-    implicit runner: TransactionTaskRunner[ExtendedResource]
-  ): Task[A] =
-    runner.run(this)
-}
+trait TransactionTask[+A]
 
 object TransactionTask {
 
@@ -95,8 +31,8 @@ object TransactionTask {
     * @tparam A TransactionTaskの値の型
     * @return 実行するとaの値を返すTransactionTask
     */
-  def apply[Resource, A](a: => A): TransactionTask[Resource, A] =
-    new TransactionTask[Resource, A] {
+  def apply[Resource, A](a: => A): TransactionTask[A] =
+    new TransactionTask[A] {
       def execute(resource: Resource): Task[A] = Task.now(a)
     }
 }
@@ -116,5 +52,5 @@ trait TransactionTaskRunner[Resource] {
     * @tparam A TransactionTask実行すると得られる値の型
     * @return TransactionTask実行して得られた値
     */
-  def run[A](task: TransactionTask[Resource, A]): Task[A]
+  def run[A](task: TransactionTask[A]): Task[A]
 }

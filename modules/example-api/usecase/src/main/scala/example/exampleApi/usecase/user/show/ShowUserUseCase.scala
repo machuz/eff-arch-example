@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext
 
 abstract class ShowUserUseCase extends EffUseCase with EffPushPort[ShowUserUseCaseArgs, Error, ShowUserUseCaseResult] {
 
-  def execute[R: _task: _trantask: _errorEither](
+  def execute[R: _task: _trantask: _readerDbSession: _errorEither](
     arg: ShowUserUseCaseArgs
   ): Eff[R, ShowUserUseCaseResult]
 }
