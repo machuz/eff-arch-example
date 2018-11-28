@@ -90,7 +90,10 @@ object SharedProject {
       )
 
       lazy val circeDeps = Seq(
-        "de.heikoseeberger" %% "akka-http-circe" % "1.22.0"
+        "de.heikoseeberger" %% "akka-http-circe"              % "1.22.0",
+        "de.heikoseeberger" %% "akka-http-circe"              % "1.22.0",
+        "io.tabmo"          %% "circe-validation-core"        % "0.0.5",
+        "io.tabmo"          %% "circe-validation-extra-rules" % "0.0.5"
       )
 
     }

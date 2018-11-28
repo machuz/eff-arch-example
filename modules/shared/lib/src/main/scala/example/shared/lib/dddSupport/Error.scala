@@ -45,4 +45,13 @@ object Error {
     underlying: Throwable,
     code: ErrorCode
   ) extends ErrorHasUnderlayAndCode(underlying, code)
+
+  final case class CirceError(
+    underlying: Throwable,
+    code: ErrorCode
+  ) extends ErrorHasUnderlayAndCode(underlying, code)
+
+  final case class FormValidationError(code: ErrorCode, errors: List[FieldError]) extends ErrorHasCode(code)
+  final case class FieldError(code: ErrorCode, attribute: String, message: String) extends ErrorHasCode(code)
+
 }

@@ -8,7 +8,8 @@ import akka.http.scaladsl.server.StandardRoute
 import example.shared.lib.dddSupport.{ Error, ErrorCode }
 
 class DefaultPresenter @Inject()(
-  errorResponseConverter: ErrorResponseConverter
+  errorResponseConverter: ErrorResponseConverter,
+  formErrorResponseConverter: FormErrorResponseConverter,
 ) {
 
   def response[A](arg: Either[Error, A]): StandardRoute = {
@@ -24,6 +25,8 @@ class DefaultPresenter @Inject()(
         errorResponseConverter.convertToErrorResponse(StatusCodes.NotFound, e.code, e)
       case Left(e: Error.UseCaseError) if e.code == ErrorCode.SERVER_ERROR =>
         errorResponseConverter.convertToErrorResponse(StatusCodes.InternalServerError, e.code, e)
+      case Left(e: Error.FormValidationError) if e.code == ErrorCode.INVALID_FORM_VALUE_ERROR =>
+        formErrorResponseConverter.convertToErrorResponse(StatusCodes.BadRequest, e)
       case Left(e) =>
         errorResponseConverter.convertToErrorResponse(StatusCodes.InternalServerError, ErrorCode.SERVER_ERROR, e)
     }

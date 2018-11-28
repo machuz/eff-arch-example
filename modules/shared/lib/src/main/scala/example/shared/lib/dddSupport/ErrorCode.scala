@@ -19,11 +19,13 @@ object ErrorCode {
 
   case object CONFLICT extends ErrorCode("CONFLICT")
 
-  case object SERVER_ERROR        extends ErrorCode("SERVER_ERROR")
-  case object JSON_PARSE_ERROR    extends ErrorCode("JSON_PARSE_ERROR")
-  case object HTTP_REQUEST_ERROR  extends ErrorCode("HTTP_REQUEST_ERROR")
-  case object REDIS_REQUEST_ERROR extends ErrorCode("REDIS_REQUEST_ERROR")
-  case object REDIS_COMMAND_ERROR extends ErrorCode("REDIS_COMMAND_ERROR")
-  case object AWS_API_ERROR       extends ErrorCode("AWS_API_ERROR")
+  case object SERVER_ERROR             extends ErrorCode("SERVER_ERROR")
+  case object JSON_PARSE_ERROR         extends ErrorCode("JSON_PARSE_ERROR")
+  case object HTTP_REQUEST_ERROR       extends ErrorCode("HTTP_REQUEST_ERROR")
+  case object REDIS_REQUEST_ERROR      extends ErrorCode("REDIS_REQUEST_ERROR")
+  case object REDIS_COMMAND_ERROR      extends ErrorCode("REDIS_COMMAND_ERROR")
+  case object AWS_API_ERROR            extends ErrorCode("AWS_API_ERROR")
+  case object CIRCE_PARSE_ERROR        extends ErrorCode("CIRCE_PARSE_ERROR")
+  case object INVALID_FORM_VALUE_ERROR extends ErrorCode("INVALID_FORM_VALUE")
 
 }
