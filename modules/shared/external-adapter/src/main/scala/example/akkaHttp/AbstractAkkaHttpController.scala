@@ -14,7 +14,7 @@ abstract class AbstractAkkaHttpController {
 
   def extractRequest(
     request: HttpRequest
-  )(implicit ec: ExecutionContext, materializer: ActorMaterializer): Future[String] =
+  ): Future[String] =
     request.entity.dataBytes.runFold(ByteString.empty)(_ ++ _).map(_.utf8String)
 
 }

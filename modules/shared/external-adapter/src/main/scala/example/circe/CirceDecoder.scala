@@ -1,6 +1,6 @@
 package example.circe
 
-import cats.data.Validated.{Invalid, Valid}
+import cats.data.Validated.{ Invalid, Valid }
 import example.shared.lib.dddSupport.Error
 import io.circe.Decoder
 import io.circe.parser._

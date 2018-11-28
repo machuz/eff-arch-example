@@ -30,8 +30,8 @@ object ErrorJsonModel extends OutputJson[ErrorJsonModel] {
 }
 
 case class FormErrorResponse(
-                          errors: Seq[FormErrorJsonModel]
-                        )
+  errors: Seq[FormErrorJsonModel]
+)
 
 object FormErrorResponse extends OutputJson[FormErrorResponse] {
 
@@ -39,16 +39,17 @@ object FormErrorResponse extends OutputJson[FormErrorResponse] {
 
   def apply(formValidationError: FormValidationError): FormErrorResponse = {
     FormErrorResponse(
-      errors = formValidationError.errors.map(error => FormErrorJsonModel(error.code.value, error.attribute, error.message))
+      errors =
+        formValidationError.errors.map(error => FormErrorJsonModel(error.code.value, error.attribute, error.message))
     )
   }
 }
 
 case class FormErrorJsonModel(
-                           code: String,
-                           attribute: String,
-                           message: String
-                         )
+  code: String,
+  attribute: String,
+  message: String
+)
 
 object FormErrorJsonModel extends OutputJson[FormErrorJsonModel] {
   override implicit val encoder: Encoder[FormErrorJsonModel] = deriveEncoder

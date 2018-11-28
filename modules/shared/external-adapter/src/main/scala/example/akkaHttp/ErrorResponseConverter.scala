@@ -1,6 +1,6 @@
 package example.akkaHttp
 import com.google.inject.Inject
-import akka.http.scaladsl.model.{HttpEntity, HttpResponse, StatusCode}
+import akka.http.scaladsl.model.{ HttpEntity, HttpResponse, StatusCode }
 import akka.http.scaladsl.server.Directives.complete
 import akka.http.scaladsl.server.StandardRoute
 import example.shared.adapter.secondary.json.circe.JsonPrinter
@@ -40,8 +40,8 @@ class ErrorResponseConverter @Inject()(
 }
 
 class FormErrorResponseConverter @Inject()(
-                                        jsonPrinter: JsonPrinter
-                                      ) {
+  jsonPrinter: JsonPrinter
+) {
 
   def convertToErrorResponse(statusCode: StatusCode, formValidationError: FormValidationError): StandardRoute = {
     val httpRes = HttpResponse(
@@ -52,6 +52,5 @@ class FormErrorResponseConverter @Inject()(
     )
     complete(httpRes)
   }
-
 
 }
