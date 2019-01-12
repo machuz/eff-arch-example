@@ -8,7 +8,7 @@ import example.shared.lib.eff._
 import example.shared.lib.eff.atnosEff._task
 
 abstract class UserRepository extends Repository[UserId, User] {
-  def resolveById[R: _task: _trantask: _readerDbSession](id: UserId): Eff[R, Option[User]]
-  def store[R: _task: _trantask: _readerDbSession](entity: User): Eff[R, User]
-  def remove[R: _trantask: _readerDbSession](id: UserId): Eff[R, Unit]
+  def resolveById[R: _task: _trantask: _readerDbSession: _stateTransaction](id: UserId): Eff[R, Option[User]]
+  def store[R: _task: _trantask: _readerDbSession: _stateTransaction](entity: User): Eff[R, User]
+  def remove[R: _trantask: _readerDbSession: _stateTransaction](id: UserId): Eff[R, Unit]
 }

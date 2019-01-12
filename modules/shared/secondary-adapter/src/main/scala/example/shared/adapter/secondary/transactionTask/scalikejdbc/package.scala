@@ -5,22 +5,15 @@ import scala.concurrent.Future
 import _root_.scalikejdbc._
 import cats.data.Reader
 import example.shared.lib.eff.db.transactionTask.TransactionTaskTypes
-import example.shared.lib.transactionTask.{
-  ReadTransaction,
-//  ReadTransactionTask,
-  ReadWriteTransaction,
-  Transaction,
-  TransactionTask,
-  TransactionTaskRunner
-}
+import example.shared.lib.transactionTask.{ DbSession, Transaction, TransactionTask, TransactionTaskRunner }
 import monix.eval.Task
 
 import scala.reflect.ClassTag
 
 package object scalikejdbc {
 
-  def fetchDBSession(a: Transaction): DBSession =
-    a.asInstanceOf[ScalikejdbcTransaction].session
+  def fetchDbSession(a: DbSession): DBSession =
+    a.asInstanceOf[ScalikejdbcDbSession].value
 
 //  def readSessionAsk: ReadTransactionTask[ReadTransaction, DBSession] =
 //    new ReadTransactionTask[Transaction, DBSession] {

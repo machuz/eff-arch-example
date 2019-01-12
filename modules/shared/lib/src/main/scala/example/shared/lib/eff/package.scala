@@ -2,10 +2,11 @@ package example.shared.lib
 
 import org.atnos.eff._
 import org.atnos.eff.addon.monix.TaskEffect
+import org.atnos.eff.syntax._
 
 import cats.data.Writer
 import example.shared.lib.dddSupport.Error
-import example.shared.lib.eff.db.transactionTask.{ TransactionTaskTypes }
+import example.shared.lib.eff.db.transactionTask.TransactionTaskTypes
 import example.shared.lib.eff.util.clock.java8.{ ClockM, ClockMEffect }
 import example.shared.lib.eff.util.idGen.{ IdGen, IdGenEffect }
 import example.shared.lib.log.LogMessage
@@ -30,7 +31,9 @@ package object eff
   type ModelApplyStack = Fx.fx2[IdGen, ClockM]
 
   object atnosEff
-    extends ReaderEffect
+    extends effOperations
+    with effCats
+    with ReaderEffect
     with WriterEffect
     with StateEffect
     with EvalEffect
@@ -46,6 +49,22 @@ package object eff
     with EffCreation
     with EffImplicits
     with TaskEffect
+
+  object atnosEffSyntax
+    extends eff
+      with reader
+      with writer
+      with state
+      with eval
+      with option
+      with list
+      with either
+      with validate
+      with choose
+      with safe
+      with future
+      with memo
+      with batch
 
   object atnosEffCreation
     extends ReaderCreation

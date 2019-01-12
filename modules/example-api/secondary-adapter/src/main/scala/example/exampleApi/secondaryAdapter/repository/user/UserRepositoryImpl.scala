@@ -11,17 +11,20 @@ import example.shared.adapter.secondary.rdb.scalikejdbc.pimp.RichMySQLSyntaxSupp
 import example.shared.adapter.secondary.eff._
 import example.shared.lib.eff._
 import example.shared.lib.eff.atnosEff._
-import example.shared.lib.transactionTask.Transaction
+import example.shared.lib.transactionTask.{ DbSession, Transaction }
 
 class UserRepositoryImpl extends UserRepository with UserConverter {
 
   private val u = UserDataModel.syntax("u")
 
-  override def resolveById[R: _task: _trantask: _readerDbSession](id: UserId): Eff[R, Option[User]] = {
+  override def resolveById[R: _task: _trantask: _readerDbSession: _stateTransaction](
+    id: UserId
+  ): Eff[R, Option[User]] = {
     for {
-      tran <- ask[R, Transaction]
+      abstractSession <- ask[R, DbSession]
+      _               <- Transaction.read
       q <- {
-        implicit val session: DBSession = fetchDBSession(tran)
+        implicit val session: DBSession = fetchDbSession(abstractSession)
         val query = withSQL {
           select
             .from(UserDataModel as u)
@@ -49,11 +52,12 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
 //    fromTranTask(query)
   }
 
-  override def store[R: _task: _trantask: _readerDbSession](entity: User): Eff[R, User] = {
+  override def store[R: _task: _trantask: _readerDbSession: _stateTransaction](entity: User): Eff[R, User] = {
     for {
-      tran <- ask[R, Transaction]
+      abstractSession <- ask[R, DbSession]
+      _               <- Transaction.readWrite
       q <- {
-        implicit val session: DBSession = fetchDBSession(tran)
+        implicit val session: DBSession = fetchDbSession(abstractSession)
         val query = withSQL {
           insert
             .into(UserDataModel)
@@ -98,11 +102,12 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
 //    fromTranTask(res)
   }
 
-  override def remove[R: _trantask: _readerDbSession](id: UserId): Eff[R, Unit] = {
+  override def remove[R: _trantask: _readerDbSession: _stateTransaction](id: UserId): Eff[R, Unit] = {
     for {
-      tran <- ask[R, Transaction]
+      abstractSession <- ask[R, DbSession]
+      _               <- Transaction.readWrite
       q <- {
-        implicit val session: DBSession = fetchDBSession(tran)
+        implicit val session: DBSession = fetchDbSession(abstractSession)
         val query = withSQL {
           delete
             .from(UserDataModel)

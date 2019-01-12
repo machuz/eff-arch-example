@@ -12,7 +12,7 @@ abstract class CreateUserUseCase
   extends EffUseCase
   with EffPushPort[CreateUserUseCaseArgs, Error, CreateUserUseCaseResult] {
 
-  def execute[R: _task: _trantask: _readerDbSession: _idgen: _clockm](
+  def execute[R: _task: _trantask: _readerDbSession: _stateTransaction: _idgen: _clockm](
     arg: CreateUserUseCaseArgs
   ): Eff[R, CreateUserUseCaseResult]
 

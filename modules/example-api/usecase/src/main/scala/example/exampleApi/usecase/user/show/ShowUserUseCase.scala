@@ -8,11 +8,9 @@ import example.shared.lib.dddSupport.Error
 import example.shared.lib.eff._
 import example.shared.lib.eff.atnosEff._
 
-import scala.concurrent.ExecutionContext
-
 abstract class ShowUserUseCase extends EffUseCase with EffPushPort[ShowUserUseCaseArgs, Error, ShowUserUseCaseResult] {
 
-  def execute[R: _task: _trantask: _readerDbSession: _errorEither](
+  def execute[R: _task: _trantask: _readerDbSession: _stateTransaction: _errorEither](
     arg: ShowUserUseCaseArgs
   ): Eff[R, ShowUserUseCaseResult]
 }
