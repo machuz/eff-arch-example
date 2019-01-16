@@ -30,26 +30,15 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
             .from(UserDataModel as u)
             .where
             .eq(u.id, id.value)
-        }.map(UserDataModel(u.resultName))
-          .single
-          .apply
-          .map(convertToDomainModel)
+        }.map { rs =>
+          convertToDomainModel(UserDataModel(u.resultName)(rs))
+        }.single
         read(query)
       }
     } yield q
-//    val query: TransactionTask[ReadTransaction, Option[User]] =
-//      sessionAsk.map { implicit session =>
-//        withSQL {
-//          select
-//            .from(UserDataModel as u)
-//            .where
-//            .eq(u.id, id.value)
-//        }.map(UserDataModel(u.resultName))
-//          .single
-//          .apply
-//          .map(convertToDomainModel)
-//      }
-//    fromTranTask(query)
+
+
+//    Eff[R, SqlToOptoin[User, HasExtractor]]
   }
 
   override def store[R: _task: _trantask: _readerDbSession: _stateTransaction](entity: User): Eff[R, User] = {

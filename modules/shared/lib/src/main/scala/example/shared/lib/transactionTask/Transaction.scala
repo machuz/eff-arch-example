@@ -8,6 +8,7 @@ import example.shared.lib.eff.atnosEff._
 sealed class Transaction
 
 object Transaction {
+  case object Initialize           extends Transaction
   case object ReadTransaction      extends Transaction
   case object ReadWriteTransaction extends Transaction
 
@@ -16,8 +17,9 @@ object Transaction {
       nowTransaction <- get[R, Transaction]
       res <- {
         nowTransaction match {
-          case ReadTransaction      => put[R, Transaction](ReadTransaction)
-          case ReadWriteTransaction => put[R, Transaction](ReadWriteTransaction)
+          // case ReadTransaction || Initialize => put[R, Transaction](ReadTransaction)
+          case ReadTransaction || Initialize => modify[R, Transaction]((_: Transaction) => ReadTransaction)
+          case ReadWriteTransaction          => nowTransaction
         }
       }
     } yield res
