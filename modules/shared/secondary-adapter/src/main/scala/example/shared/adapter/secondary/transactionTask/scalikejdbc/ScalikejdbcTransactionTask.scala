@@ -1,6 +1,6 @@
 package example.shared.adapter.secondary.transactionTask.scalikejdbc
-import example.shared.lib.transactionTask.TransactionTask
+import example.shared.lib.transactionTask.{ Transaction, TransactionTask }
 
-sealed abstract class ScalikejdbcTransactionTask[+A] extends TransactionTask[A]
-case class Read[+A](v: A)                            extends ScalikejdbcTransactionTask[A]
-case class Write[+A](v: A)                           extends ScalikejdbcTransactionTask[A]
+sealed abstract class ScalikejdbcTransactionTask[+A]
+case class Read[+A](v: A)
+case class Write[+A](v: A)

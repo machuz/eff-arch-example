@@ -52,19 +52,19 @@ package object eff
 
   object atnosEffSyntax
     extends eff
-      with reader
-      with writer
-      with state
-      with eval
-      with option
-      with list
-      with either
-      with validate
-      with choose
-      with safe
-      with future
-      with memo
-      with batch
+    with reader
+    with writer
+    with state
+    with eval
+    with option
+    with list
+    with either
+    with validate
+    with choose
+    with safe
+    with future
+    with memo
+    with batch
 
   object atnosEffCreation
     extends ReaderCreation

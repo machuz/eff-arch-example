@@ -6,6 +6,8 @@ import cats.Monad
 import example.shared.lib.eff._
 import monix.eval.Task
 
+import scala.concurrent.{ ExecutionContext, Future }
+
 /**
   * 『PofEAA』の「Unit of Work」パターンの実装
   *
@@ -19,7 +21,9 @@ import monix.eval.Task
 //trait ReadTransactionTask[-Resource, +A]      extends TransactionTask[Resource, A]
 //trait ReadWriteTransactionTask[-Resource, +A] extends ReadTransactionTask[Resource, A]
 
-trait TransactionTask[+A]
+trait TransactionTask[+A] {
+  def execute(resource: DbSession)(implicit ec: ExecutionContext): Future[A]
+}
 
 object TransactionTask {
 
@@ -27,13 +31,12 @@ object TransactionTask {
     * TransactionTaskのデータコンストラクタ
     *
     * @param a TransactionTaskの値
-    * @tparam Resource トランザクションオブジェクトの型
     * @tparam A TransactionTaskの値の型
     * @return 実行するとaの値を返すTransactionTask
     */
-  def apply[Resource, A](a: => A): TransactionTask[A] =
+  def apply[A](a: => A): TransactionTask[A] =
     new TransactionTask[A] {
-      def execute(resource: Resource): Task[A] = Task.now(a)
+      def execute(resource: DbSession)(implicit ec: ExecutionContext): Future[A] = Future(a)
     }
 }
 

@@ -12,6 +12,9 @@ import example.shared.adapter.secondary.eff._
 import example.shared.lib.eff._
 import example.shared.lib.eff.atnosEff._
 import example.shared.lib.transactionTask.{ DbSession, Transaction }
+import monix.eval.Task
+
+import scala.concurrent.Future
 
 class UserRepositoryImpl extends UserRepository with UserConverter {
 
@@ -31,13 +34,13 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
             .where
             .eq(u.id, id.value)
         }.map { rs =>
-          convertToDomainModel(UserDataModel(u.resultName)(rs))
-        }.single
-        read(query)
+            convertToDomainModel(UserDataModel(u.resultName)(rs))
+          }
+          .single
+          .apply()
+        fromTranTask(query)
       }
     } yield q
-
-
 //    Eff[R, SqlToOptoin[User, HasExtractor]]
   }
 
@@ -60,7 +63,7 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
               u.id -> entity.id.value
             )
         }.update().apply()
-        write(query).map(_ => entity)
+        fromTranTask(query).map(_ => entity)
       }
     } yield q
 //
@@ -92,6 +95,7 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
   }
 
   override def remove[R: _trantask: _readerDbSession: _stateTransaction](id: UserId): Eff[R, Unit] = {
+
     for {
       abstractSession <- ask[R, DbSession]
       _               <- Transaction.readWrite
@@ -103,7 +107,7 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
             .where
             .eq(u.id, id.value)
         }.update.apply()
-        write(query).map(_ => ())
+        fromTranTask(query).map(_ => ())
       }
     } yield q
   }

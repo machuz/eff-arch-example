@@ -2,13 +2,14 @@ package example.shared.lib.transactionTask
 
 import org.atnos.eff.Eff
 
+import cats.Monoid
 import example.shared.lib.eff._stateTransaction
 import example.shared.lib.eff.atnosEff._
 
-sealed class Transaction
+sealed trait Transaction
 
 object Transaction {
-  case object Initialize           extends Transaction
+  case object NoTransaction        extends Transaction
   case object ReadTransaction      extends Transaction
   case object ReadWriteTransaction extends Transaction
 
@@ -17,9 +18,10 @@ object Transaction {
       nowTransaction <- get[R, Transaction]
       res <- {
         nowTransaction match {
-          // case ReadTransaction || Initialize => put[R, Transaction](ReadTransaction)
-          case ReadTransaction || Initialize => modify[R, Transaction]((_: Transaction) => ReadTransaction)
-          case ReadWriteTransaction          => nowTransaction
+          case ReadTransaction | NoTransaction =>
+            put[R, Transaction](ReadTransaction)
+//          case ReadTransaction      => modify[R, Transaction]((_: Transaction) => ReadTransaction)
+          case ReadWriteTransaction => ().pureEff[R]
         }
       }
     } yield res
