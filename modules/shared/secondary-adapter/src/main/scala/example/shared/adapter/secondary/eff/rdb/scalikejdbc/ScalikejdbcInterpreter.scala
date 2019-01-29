@@ -8,6 +8,7 @@ import example.shared.lib.eff._
 import example.shared.lib.eff.atnosEff._
 import example.shared.lib.transactionTask.DbSession
 import monix.eval.Task
+import monix.execution.Scheduler
 
 import scala.concurrent.ExecutionContext
 
@@ -19,19 +20,18 @@ trait ScalikejdbcInterpreter {
   )(
     implicit ec: ExecutionContext,
     t1: Member.Aux[TranTask, R, U],
-    m1: _task[U]
+    m1: _task[U],
+    scheduler: Scheduler
 //    m2: _readerDbSession[U]
   ): Eff[U, A] = {
 
     translate(effect)(new Translate[TranTask, U] {
       def apply[X](ax: TranTask[X]): Eff[U, X] = {
         for {
-//          s <- ask[U, DbSession]
           res <- {
-//            val session = fetchDbSession(s)
-            val future = ax.execute(session)
-            future.onComplete(_ => session.value.close())
-            fromTask(Task.fromFuture(future))
+            val task = ax.execute(session)
+            task.runOnComplete(_ => session.value.close())
+            fromTask(task)
           }
         } yield res
       }

@@ -7,6 +7,7 @@ import example.shared.adapter.secondary.transactionTask.scalikejdbc.ScalikejdbcD
 import example.shared.lib.transactionTask.DbSession
 import example.shared.lib.transactionTask.Transaction.{ NoTransaction, ReadTransaction, ReadWriteTransaction }
 import monix.eval.Task
+import monix.execution.Scheduler
 import scalikejdbc.DB
 
 import scala.concurrent.ExecutionContext
@@ -25,11 +26,12 @@ trait ScalikejdbcTransactionTaskEffect {
     def runTranTask[U](
       implicit ec: ExecutionContext,
       m1: _task[U],
-      m2: _readerDbSession[U],
-      m4: _stateTransaction[R],
+//      m2: _readerDbSession[U],
+//      m4: _stateTransaction[R],
       member1: Member.Aux[TranTask, R, U],
-      member2: Member[ReaderDbSession, R],
-      member3: Member[StateTransaction, U]
+//      member2: Member[ReaderDbSession, R],
+      member3: Member[StateTransaction, U],
+      scheduler: Scheduler
     ): Eff[U, A] = {
 
       val tranState = for {

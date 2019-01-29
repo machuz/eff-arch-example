@@ -11,7 +11,7 @@ import example.shared.adapter.secondary.rdb.scalikejdbc.pimp.RichMySQLSyntaxSupp
 import example.shared.adapter.secondary.eff._
 import example.shared.lib.eff._
 import example.shared.lib.eff.atnosEff._
-import example.shared.lib.transactionTask.{ DbSession, Transaction }
+import example.shared.lib.transactionTask.{ DbSession, Transaction, TransactionTask }
 import monix.eval.Task
 
 import scala.concurrent.Future
@@ -20,14 +20,20 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
 
   private val u = UserDataModel.syntax("u")
 
+  def ask: TransactionTask[DBSession] =
+    new TransactionTask[DBSession] {
+      def execute(transaction: DbSession): Task[DBSession] =
+        Task.now(transaction.asInstanceOf[ScalikejdbcDbSession].value)
+    }
+
   override def resolveById[R: _task: _trantask: _readerDbSession: _stateTransaction](
     id: UserId
   ): Eff[R, Option[User]] = {
     for {
-      abstractSession <- ask[R, DbSession]
-      _               <- Transaction.read
+      session <- fromTranTask(ask)
+      _       <- Transaction.read
       q <- {
-        implicit val session: DBSession = fetchDbSession(abstractSession)
+        implicit val s: DBSession = session
         val query = withSQL {
           select
             .from(UserDataModel as u)
@@ -38,18 +44,17 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
           }
           .single
           .apply()
-        fromTranTask(query)
+        pureTranTask(query)
       }
     } yield q
-//    Eff[R, SqlToOptoin[User, HasExtractor]]
   }
 
   override def store[R: _task: _trantask: _readerDbSession: _stateTransaction](entity: User): Eff[R, User] = {
     for {
-      abstractSession <- ask[R, DbSession]
-      _               <- Transaction.readWrite
+      session <- fromTranTask(ask)
+      _       <- Transaction.readWrite
       q <- {
-        implicit val session: DBSession = fetchDbSession(abstractSession)
+        implicit val s: DBSession = session
         val query = withSQL {
           insert
             .into(UserDataModel)
@@ -63,7 +68,7 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
               u.id -> entity.id.value
             )
         }.update().apply()
-        fromTranTask(query).map(_ => entity)
+        pureTranTask(query).map(_ => entity)
       }
     } yield q
 //
@@ -97,17 +102,17 @@ class UserRepositoryImpl extends UserRepository with UserConverter {
   override def remove[R: _trantask: _readerDbSession: _stateTransaction](id: UserId): Eff[R, Unit] = {
 
     for {
-      abstractSession <- ask[R, DbSession]
-      _               <- Transaction.readWrite
+      session <- fromTranTask(ask)
+      _       <- Transaction.readWrite
       q <- {
-        implicit val session: DBSession = fetchDbSession(abstractSession)
+        implicit val s: DBSession = session
         val query = withSQL {
           delete
             .from(UserDataModel)
             .where
             .eq(u.id, id.value)
         }.update.apply()
-        fromTranTask(query).map(_ => ())
+        pureTranTask(query).map(_ => ())
       }
     } yield q
   }

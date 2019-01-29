@@ -22,7 +22,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 //trait ReadWriteTransactionTask[-Resource, +A] extends ReadTransactionTask[Resource, A]
 
 trait TransactionTask[+A] {
-  def execute(resource: DbSession)(implicit ec: ExecutionContext): Future[A]
+  def execute(resource: DbSession): Task[A]
 }
 
 object TransactionTask {
@@ -36,7 +36,7 @@ object TransactionTask {
     */
   def apply[A](a: => A): TransactionTask[A] =
     new TransactionTask[A] {
-      def execute(resource: DbSession)(implicit ec: ExecutionContext): Future[A] = Future(a)
+      def execute(resource: DbSession): Task[A] = Task.now(a)
     }
 }
 
