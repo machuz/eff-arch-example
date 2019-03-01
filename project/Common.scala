@@ -54,6 +54,8 @@ object Common {
       resolvers ++= Seq(
         "google" at "https://maven-central-asia.storage-download.googleapis.com/repos/central/data/",
         Resolver.bintrayRepo("findify", "maven"),
+        Resolver.bintrayRepo("tabmo", "maven"),
+        Resolver.bintrayRepo("hseeberger", "maven"),
         Resolver.sonatypeRepo("releases"),
         Resolver.sonatypeRepo("snapshots"),
         "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
@@ -69,7 +71,7 @@ object Common {
     )
     lazy val DebugTest = config("debug") extend Test
     lazy val MysqlTest = config("mysql") extend Test
-    lazy val TestSeq = Seq(DebugTest, MysqlTest)
+    lazy val TestSeq   = Seq(DebugTest, MysqlTest)
 
     // test共通設定
     lazy val commonTestSettings = Seq(
@@ -83,7 +85,6 @@ object Common {
       javaOptions in DebugTest ++= Seq("-agentlib:jdwp=transport=dt_socket,server=n,suspend=n,address=41230"),
       scalafmtTestOnCompile := true
     ) ++ inConfig(DebugTest)(Defaults.testTasks) ++ inConfig(MysqlTest)(Defaults.testTasks)
-
 
     // module testの共通設定
     lazy val commonModuleTestSettings = Seq(
