@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext
 
 class ExecutionContextModule extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[ExecutionContext])
       .annotatedWith(Names.named("default-app-context"))
       .toProvider(classOf[DefaultAppContextProvider])

@@ -6,7 +6,7 @@ import example.user.UserController
 
 class ExampleApiExternalAdapterModule extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[ExampleRouter])
     bind(classOf[UserController])
   }

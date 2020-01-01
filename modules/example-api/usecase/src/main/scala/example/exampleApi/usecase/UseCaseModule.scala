@@ -7,7 +7,7 @@ import example.exampleApi.usecase.user.show.{ ShowUserUseCase, ShowUserUseCaseIm
 
 class UseCaseModule extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[ShowUserUseCase]).to(classOf[ShowUserUseCaseImpl])
     bind(classOf[CreateUserUseCase]).to(classOf[CreateUserUseCaseImpl])
   }

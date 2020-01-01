@@ -22,7 +22,7 @@ object Common {
   object Settings {
 
     private lazy val Scala211 = "2.11.11"
-    private lazy val Scala212 = "2.12.6"
+    private lazy val Scala212 = "2.12.10"
 
     lazy val defaultScalaVersion = Scala212
 

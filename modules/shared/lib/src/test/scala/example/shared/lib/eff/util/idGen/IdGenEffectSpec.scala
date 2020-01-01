@@ -3,19 +3,19 @@ package example.shared.lib.eff.util.idGen
 import com.eaio.uuid.UUID
 
 import org.atnos.eff.Eff
-import org.atnos.eff.syntax.eff._
-import org.mockito.{ Matchers, Mockito }
+import org.mockito.Mockito
 
 import example.shared.lib.test.AbstractSpecification
 import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier, UUIDIdGenerator }
 import example.shared.lib.eff.IdGenStack
 import example.shared.lib.eff.util.idGen.interpreter.IdGenInterpreterImpl
-import example.shared.lib.eff._
+import example.shared.lib.eff.myEff._
+import example.shared.lib.eff.atnosEffSyntax._
 
 class IdGenEffectSpec extends AbstractSpecification {
 
   import IdGenEffectSpec._
-  import Matchers._
+  import org.mockito.Matchers._
   import Mockito._
 
   trait SetUp {

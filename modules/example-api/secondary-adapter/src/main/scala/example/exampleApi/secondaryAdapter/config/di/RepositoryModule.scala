@@ -7,7 +7,7 @@ import example.exampleApi.secondaryAdapter.repository.user.UserRepositoryImpl
 
 class RepositoryModule extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[UserRepository]).to(classOf[UserRepositoryImpl])
   }
 

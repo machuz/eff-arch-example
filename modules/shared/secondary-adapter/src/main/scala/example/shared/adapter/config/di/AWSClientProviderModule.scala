@@ -4,6 +4,6 @@ import com.google.inject.AbstractModule
 
 class AWSClientProviderModule extends AbstractModule {
 
-  def configure(): Unit = {}
+  override def configure(): Unit = {}
 
 }

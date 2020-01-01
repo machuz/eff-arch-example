@@ -3,11 +3,10 @@ package example.shared.lib.test
 import com.eaio.uuid.UUID
 
 import org.joda.time.{ DateTime, DateTimeZone, LocalDate }
-
 import org.joda.time.{ DateTime, LocalDate }
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.words.MatcherWords
-import org.scalatest.{ MustMatchers, OptionValues, WordSpec }
+import org.scalatest.{ EitherValues, MustMatchers, OptionValues, WordSpec }
 
 import monix.eval.Task
 import monix.execution.Scheduler
@@ -15,7 +14,6 @@ import monix.execution.Scheduler
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, Awaitable, Future }
 import scala.util.Random
-
 import example.shared.lib.dddSupport.domain.{ EsRandom, Identifier, UUIDIdGenerator }
 
 /**
@@ -26,6 +24,7 @@ abstract class AbstractSpecification
   with ScalaFutures
   with MatcherWords
   with MustMatchers
+  with EitherValues
   with OptionValues {
 
   import scala.concurrent.ExecutionContext.Implicits.global
@@ -54,7 +53,7 @@ abstract class AbstractSpecification
 
   protected[this] def await[T](a: Awaitable[T]): T = Await.result(a, Duration.Inf)
 
-  protected[this] def await[T](a: Task[T])(implicit s: Scheduler): T = await(a.runAsync)
+  protected[this] def await[T](a: Task[T])(implicit s: Scheduler): T = await(a.runToFuture)
 
   protected[this] def awaitOrRecover[T](future: Future[T]): Option[T] =
     await(future.map(Some(_)).recover { case _ => None })

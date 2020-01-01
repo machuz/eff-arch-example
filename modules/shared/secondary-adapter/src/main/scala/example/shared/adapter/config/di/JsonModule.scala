@@ -5,7 +5,7 @@ import example.shared.adapter.secondary.json.circe.{ DefaultJsonPrinter, JsonPri
 
 class JsonModule extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[JsonPrinter]).to(classOf[DefaultJsonPrinter])
   }
 

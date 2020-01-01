@@ -8,7 +8,7 @@ import example.shared.adapter.secondary.akka.{ ActorMaterializerProvider, ActorS
 
 class ActorSystemModule extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[ActorSystem]).toProvider(classOf[ActorSystemProvider])
     bind(classOf[ActorMaterializer]).toProvider(classOf[ActorMaterializerProvider])
   }

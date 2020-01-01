@@ -6,7 +6,7 @@ import example.akkaHttp.{ DefaultPresenter, DefaultRejectionHandlerProvider }
 
 class AkkaHttpServerBuiltInModule extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[DefaultPresenter])
     bind(classOf[RejectionHandler]).toProvider(classOf[DefaultRejectionHandlerProvider])
   }
