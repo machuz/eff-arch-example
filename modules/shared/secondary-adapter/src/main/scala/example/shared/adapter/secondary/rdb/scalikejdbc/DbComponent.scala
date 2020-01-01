@@ -9,6 +9,7 @@ import scalikejdbc._
 class DbComponent @Inject()(
   dbConfig: ScalikejdbcConfig
 ) {
+  initialize()
 
   def initialize(): Unit = {
     val dataSource: HikariDataSource = {
@@ -26,5 +27,7 @@ class DbComponent @Inject()(
     }
     ConnectionPool.singleton(new DataSourceConnectionPool(dataSource))
   }
+
+  def getDB = DB(ConnectionPool.borrow())
 
 }

@@ -1,12 +1,11 @@
 package example.shared.lib.eff.util.clock.java8
 
 import org.atnos.eff.syntax.all._
-import org.atnos.eff.{ |=, Eff, Member }
+import org.atnos.eff.{ |=, Eff, Member, MemberIn }
 
 import cats.data.Reader
 
 import java.time.Clock
-
 import example.shared.lib.eff.util.clock.java8.interpreter.ClockMInterpreter
 import example.shared.lib.eff.util.clock.java8.ClockMInterpretationTypes.ReaderClock
 
@@ -21,8 +20,8 @@ trait ClockMOps {
       implicit interpreter: ClockMInterpreter,
       m1: Member.Aux[ClockM, R, U],
       m2: Member[ReaderClock, U]
-    ): Eff[m2.Out, A] = {
-      interpreter.run(effects).runReader(clock)(m2)
+    ) = {
+      interpreter.run(effects).runReader(clock)
     }
   }
 }

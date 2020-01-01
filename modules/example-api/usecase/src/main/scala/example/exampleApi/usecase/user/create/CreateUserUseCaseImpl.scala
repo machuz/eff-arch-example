@@ -4,15 +4,14 @@ import org.atnos.eff.Eff
 
 import example.exampleApi.domain.model.user.User
 import example.exampleApi.domain.repository.user.UserRepository
-import example.shared.lib.eff._
+import example.shared.lib.eff.myEff._
+import example.shared.lib.eff.atnosEff._
 import javax.inject.Inject
-
-import scala.concurrent.ExecutionContext
 
 class CreateUserUseCaseImpl @Inject()(
   userRepo: UserRepository
 ) extends CreateUserUseCase {
-  override def execute[R: _trantask: _idgen: _clockm](
+  override def execute[R: _task: _trantask: _idgen: _clockm](
     arg: CreateUserUseCaseArgs
   ): Eff[R, CreateUserUseCaseResult] = {
     for {

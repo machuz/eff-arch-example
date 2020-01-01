@@ -6,7 +6,7 @@ import example.config.AkkaHttpServerConf
 
 class SharedExternalAdapterConfModule extends AbstractModule {
 
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[AkkaHttpServerConf])
   }
 

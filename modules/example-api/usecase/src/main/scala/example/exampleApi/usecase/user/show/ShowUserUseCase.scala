@@ -5,13 +5,13 @@ import org.atnos.eff.Eff
 import example.exampleApi.domain.model.user.{ User, UserId }
 import example.shared.lib.dddSupport.usecase.{ EffPushPort, EffUseCase, UseCaseArgument, UseCaseResult }
 import example.shared.lib.dddSupport.Error
-import example.shared.lib.eff._
-
-import scala.concurrent.ExecutionContext
+import example.shared.lib.eff._errorEither
+import example.shared.lib.eff.myEff._
+import example.shared.lib.eff.atnosEff._
 
 abstract class ShowUserUseCase extends EffUseCase with EffPushPort[ShowUserUseCaseArgs, Error, ShowUserUseCaseResult] {
 
-  def execute[R: _trantask: _errorEither](
+  def execute[R: _task: _trantask: _errorEither](
     arg: ShowUserUseCaseArgs
   ): Eff[R, ShowUserUseCaseResult]
 }

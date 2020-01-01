@@ -31,6 +31,7 @@ class ExampleApiServer @Inject()(
   override protected def routes: Route =
     path("hello") {
       get {
+        "a"
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
       }
     } ~ exampleRouter.routes

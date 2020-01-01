@@ -3,7 +3,7 @@ package example.exampleApi.domain.model.user
 import org.atnos.eff.Eff
 
 import example.shared.lib.dddSupport.domain.{ IdGenerator, Identifier }
-import example.shared.lib.eff._
+import example.shared.lib.eff.myEff._
 import example.shared.lib.eff.util.idGen.IdGen
 
 case class UserId(value: String) extends Identifier[String]

@@ -1,12 +1,12 @@
 package example.exampleApi.domain.model.user
+
 import org.atnos.eff.Eff
 
 import example.shared.lib.dddSupport.domain.Entity
 
 import java.time.ZonedDateTime
-import example.shared.lib.eff._
+import example.shared.lib.eff.myEff._
 import example.shared.lib.eff.util.clock.java8.ClockM
-import example.shared.lib.eff.util.idGen.IdGen
 
 case class User private (
   id: UserId,
